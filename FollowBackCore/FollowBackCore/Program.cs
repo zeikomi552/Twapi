@@ -19,13 +19,14 @@ namespace FollowBackCore
             {
                 switch (args[i].ToLower())
                 {
-                    case "-tw":
-                    case "-twd":
-                    case "-tws":
-                    case "-frc":
-                    case "-frd":
-                    case "-fvc":
-                    case "-fvd":
+                    case "/tw":
+                    case "/twd":
+                    case "/tws":
+                    case "/frc":
+                    case "/frd":
+                    case "/fvc":
+                    case "/fvd":
+                    case "/?":
                         {
                             _Args.Add("action", args.Length > i ? args[i] : string.Empty);
                             break;
@@ -91,31 +92,55 @@ namespace FollowBackCore
 
             switch (action)
             {
-                case "-h":
+                case "/?":
                     {
-                        Console.WriteLine("\tFollowBackCore.exe -h   ...ヘルプ");
-                        Console.WriteLine("\tFollowBackCore.exe -tw    ...ヘルプ");
+                        Console.WriteLine("使用方法：");
+                        Console.WriteLine("\tFollowBackCore.exe [/actioncommand] [-keys] [-options]");
+
+                        Console.WriteLine("");
+                        Console.WriteLine("/actioncommand :");
+                        Console.WriteLine("\t/?\t...ヘルプを表示します");
+                        Console.WriteLine("\t/tw\t...ツイートします");
+                        Console.WriteLine("\t/cfr\t...フォローします");
+                        Console.WriteLine("\t/dfr\t...フォローを解除します");
+                        Console.WriteLine("\t/tws\t...ツイッター検索を行います");
+                        Console.WriteLine("");
+
+                        Console.WriteLine("");
+                        Console.WriteLine("-keys :");
+                        Console.WriteLine("\t-ckey\t...TwitterAPIを使用する際に必要となるConsumer Keyを指定します");
+                        Console.WriteLine("\t-cscr\t...TwitterAPIを使用する際に必要となるConsumer Secretを指定します");
+                        Console.WriteLine("\t-atkn\t...TwitterAPIを使用する際に必要となるAccess Tokenを指定します");
+                        Console.WriteLine("\t-ascr\t...TwitterAPIを使用する際に必要となるAccess Secretを指定します");
+
+                        Console.WriteLine("");
+                        Console.WriteLine("-options :");
+                        Console.WriteLine("\t-msg\t...ツイートする際に送信するメッセージを指定します");
+                        Console.WriteLine("\t-scn\t...フォロー対象のscreen_nameを指定します");
+                        Console.WriteLine("\t-kwd\t...ツイッター検索で使用する検索キーワードを指定します");
+                        Console.WriteLine("\t-f\t...ツイッター検索で得た結果を保存するファイルパスを指定します(.xlsx)");
+
                         break;
                     }
-                case "-tw":
+                case "/tw":
                     {
                         var message = _Args["message"];
                         TwitterAPI.Tweet(_Keys, message.Replace("\\r\\n", "\r\n"));
                         break;
                     }
-                case "-cfr":
+                case "/cfr":
                     {
                         string screen_name = _Args["screen_name"];
                         TwitterAPI.CreateFollow(_Keys, screen_name);
                         break;
                     }
-                case "-dfr":
+                case "/dfr":
                     {
                         string screen_name = _Args["screen_name"];
                         TwitterAPI.BreakFollow(_Keys, screen_name);
                         break;
                     }
-                case "-tws":
+                case "/tws":
                     {
                         string search_key = _Args["search_keyword"];
                         var ret = TwitterAPI.TweetSearch(_Keys, search_key);
@@ -152,7 +177,6 @@ namespace FollowBackCore
                             // ワークブックを保存する
                             workbook.SaveAs(file_path);
                         }
-                        //}
 
                         break;
                     }
