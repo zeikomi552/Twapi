@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using FollowBackCore.Database.SQLite;
+using FollowBackCore.Database.SQLite.Base;
 using FollowBackCore.Twitter;
 using FollowBackCore.Utilities;
 using System;
@@ -13,6 +15,9 @@ namespace FollowBackCore
         static Dictionary<string, string> _Args = new Dictionary<string, string>();
         static TwitterKeys _Keys = new TwitterKeys();
         static string _Action = string.Empty;
+
+        public static string SQLitePath { get; set; }
+
         static void SetArgs(string[] args)
         {
             for (int i = 0; i < args.Length; i++)
@@ -144,39 +149,71 @@ namespace FollowBackCore
                     {
                         string search_key = _Args["search_keyword"];
                         var ret = TwitterAPI.TweetSearch(_Keys, search_key);
-                        int index = 1;
+                        SQLitePath = _Args["file_path"];
 
-                        // Excelファイルを作る
-                        using (var workbook = new XLWorkbook())
+                        using (var db = new SQLiteDataContext())
                         {
-                            var worksheet = workbook.Worksheets.Add("result");
-                            // セルに値や数式をセット
-                            worksheet.Cell($"A{index}").Value = "tweet.ID";
-                            worksheet.Cell($"B{index}").Value = "user.Id";
-                            worksheet.Cell($"C{index}").Value = "screen_name";
-                            worksheet.Cell($"D{index}").Value = "text";
-                            worksheet.Cell($"E{index}").Value = "FavoriteCount";
-                            worksheet.Cell($"F{index}").Value = "user.FriendsCount";
-                            worksheet.Cell($"G{index}").Value = "user.FollowerCount";
-                            worksheet.Cell($"H{index}").Value = "CreateAt";
+                            db.Database.EnsureCreated();
+                        }
 
-                            foreach (var tw in ret)
+
+                        DateTime insert_time = DateTime.Now;
+                        string guid = Guid.NewGuid().ToString();
+
+                        foreach (var tmp in ret)
+                        {
+                            TwitterSearchResultsBase data = new TwitterSearchResultsBase();
+                            data.CreateDt = insert_time;
+                            data.Guid = guid;
+                            data.Id = tmp.Id;
+                            data.FavoritesCount = tmp.FavoriteCount;
+                            if (tmp.User != null)
                             {
-                                index++;
-                                worksheet.Cell($"A{index}").Value = tw.Id;
-                                worksheet.Cell($"B{index}").Value = tw.User.Id;
-                                worksheet.Cell($"C{index}").Value = tw.User.ScreenName;
-                                worksheet.Cell($"D{index}").Value = tw.Text;
-                                worksheet.Cell($"E{index}").Value = tw.FavoriteCount;
-                                worksheet.Cell($"F{index}").Value = tw.User.FriendsCount;
-                                worksheet.Cell($"G{index}").Value = tw.User.FollowersCount;
-                                worksheet.Cell($"H{index}").Value = tw.CreatedAt.LocalDateTime;
+                                data.UserId = tmp.User.Id;
+                                data.ScreenName = tmp.User.ScreenName;
+                                data.FriendsCount = tmp.User.FriendsCount;
+                                data.FollowerCount = tmp.User.FollowersCount;
                             }
 
-                            string file_path = _Args["file_path"];
-                            // ワークブックを保存する
-                            workbook.SaveAs(file_path);
+                            data.Text = tmp.Text;
+
+
+                            TwitterSearchResultsBase.Insert(data);
                         }
+
+                        //int index = 1;
+
+                        //// Excelファイルを作る
+                        //using (var workbook = new XLWorkbook())
+                        //{
+                        //    var worksheet = workbook.Worksheets.Add("result");
+                        //    // セルに値や数式をセット
+                        //    worksheet.Cell($"A{index}").Value = "tweet.ID";
+                        //    worksheet.Cell($"B{index}").Value = "user.Id";
+                        //    worksheet.Cell($"C{index}").Value = "screen_name";
+                        //    worksheet.Cell($"D{index}").Value = "text";
+                        //    worksheet.Cell($"E{index}").Value = "FavoriteCount";
+                        //    worksheet.Cell($"F{index}").Value = "user.FriendsCount";
+                        //    worksheet.Cell($"G{index}").Value = "user.FollowerCount";
+                        //    worksheet.Cell($"H{index}").Value = "CreateAt";
+
+                        //    foreach (var tw in ret)
+                        //    {
+                        //        index++;
+                        //        worksheet.Cell($"A{index}").Value = tw.Id;
+                        //        worksheet.Cell($"B{index}").Value = tw.User.Id;
+                        //        worksheet.Cell($"C{index}").Value = tw.User.ScreenName;
+                        //        worksheet.Cell($"D{index}").Value = tw.Text;
+                        //        worksheet.Cell($"E{index}").Value = tw.FavoriteCount;
+                        //        worksheet.Cell($"F{index}").Value = tw.User.FriendsCount;
+                        //        worksheet.Cell($"G{index}").Value = tw.User.FollowersCount;
+                        //        worksheet.Cell($"H{index}").Value = tw.CreatedAt.LocalDateTime;
+                        //    }
+
+                        //    string file_path = _Args["file_path"];
+                        //    // ワークブックを保存する
+                        //    workbook.SaveAs(file_path);
+                        //}
 
                         break;
                     }

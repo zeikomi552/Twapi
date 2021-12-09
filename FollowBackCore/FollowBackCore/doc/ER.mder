@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<TableListM xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TableItems>
+    <Items>
+      <TableM>
+        <Name>TwitterSearchResults</Name>
+        <Description>検索結果テーブル</Description>
+        <CreateDate>2021-12-09T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateDt</Name>
+              <Description>検索日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>Guid</Name>
+              <Description>同一タイミングの操作であることを示す</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>Id</Name>
+              <Description>ツイートID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>ツイートユーザーID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>ScreenName</Name>
+              <Description>スクリーン名</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FavoritesCount</Name>
+              <Description>いいね数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendsCount</Name>
+              <Description>フォロー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowerCount</Name>
+              <Description>フォロワー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>Text</Name>
+              <Description>ツイート内容</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>TwitterFollowLog</Name>
+        <Description>フォローした履歴</Description>
+        <CreateDate>2021-12-09T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateDt</Name>
+              <Description>操作した日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>Guid</Name>
+              <Description>同一タイミングの操作であることを意味するGuid</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>フォロー対象のユーザーID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>Action</Name>
+              <Description>1:フォローした -1:フォロー外した</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>MyFriendsLog</Name>
+        <Description>自分のフォローしている人のリストログ</Description>
+        <CreateDate>2021-12-09T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateDt</Name>
+              <Description>確認した日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>Guid</Name>
+              <Description>同一タイミングの操作であることを示すGuid</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>フォローしているユーザーのId</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>ScreenName</Name>
+              <Description>スクリーン名</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FavoritesCount</Name>
+              <Description>いいね数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendsCount</Name>
+              <Description>フォロー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowerCount</Name>
+              <Description>フォロワー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>LastTweetDt</Name>
+              <Description>最終ツイート日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>TweetCount</Name>
+              <Description>ツイート数</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>MyFollowerLog</Name>
+        <Description>自分のフォロワーのリストログ</Description>
+        <CreateDate>2021-12-09T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateDt</Name>
+              <Description>確認した日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>Guid</Name>
+              <Description>同一タイミングの操作であることを示すGuid</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>フォロワーのユーザーId</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>Text</Type>
+              <Size xsi:nil="true" />
+              <Name>ScreenName</Name>
+              <Description>スクリーン名</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FavoritesCount</Name>
+              <Description>いいね数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendsCount</Name>
+              <Description>フォロー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowerCount</Name>
+              <Description>フォロワー数</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+    </Items>
+  </TableItems>
+</TableListM>
