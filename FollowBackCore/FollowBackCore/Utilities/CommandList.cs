@@ -24,7 +24,7 @@ namespace FollowBackCore.Utilities
             #region ActionCommand
             #region account
             this.Items.Add(new Command("account/settings", "アカウント設定を取得する", Command.CommandTypeEnum.Action, true));
-            this.Items.Add(new Command("account/verify_credentials", "アカウントの有効性を確認する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("account/verify_credentials", "アカウントの有効性を確認する", Command.CommandTypeEnum.Action, true));
             this.Items.Add(new Command("account/remove_profile_banner", "バナー画像を削除する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("account/settingsr", "アカウント設定を更新する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("account/update_profile", "プロフィールを更新する", Command.CommandTypeEnum.Action));
@@ -34,11 +34,11 @@ namespace FollowBackCore.Utilities
             #endregion
 
             #region application
-            this.Items.Add(new Command("application/rate_limit_status", "レートリミットを取得する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("application/rate_limit_status", "レートリミットを取得する", Command.CommandTypeEnum.Action, true));
             #endregion
 
             #region blocks
-            this.Items.Add(new Command("blocks/ids", "ブロックユーザーをIDで取得する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("blocks/ids", "ブロックユーザーをIDで取得する", Command.CommandTypeEnum.Action, true));
             this.Items.Add(new Command("blocks/list", "ブロックユーザーをオブジェクトで取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("blocks/create", "ブロックを実行する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("blocks/destroy", "ブロックを解除する", Command.CommandTypeEnum.Action));

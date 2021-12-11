@@ -38,5 +38,14 @@ namespace FollowBackCore.Twitter
         [EndpointParam("-include_entities")]
         public string Include_entities { get; set; }
 
+        [EndpointParam("-cursor")]
+        public string Cursor { get; set; }
+
+        [EndpointParam("-skip_status")]
+        public string Skip_status { get; set; }
+
+        [EndpointParam("-include_ext_alt_text")]
+        public string Include_ext_alt_text { get; set; }
+
     }
 }

@@ -147,6 +147,7 @@ namespace FollowBackCore.Twitter
 
             foreach (var param in TwitterArgs.Args)
             {
+                // エンドポイントコマンドに使用するパラメータのセット
                 SetCommandParameter(param.Key, param.Value);
 
             }
