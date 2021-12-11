@@ -118,24 +118,48 @@ namespace FollowBackCore
                     }
                 case "search/tweets":
                     {
-                        // 検索
-                        var result = TwitterAPI.Token.Search.Tweets(
-                            q => TwitterArgs.CommandOptions.Q,
-                            geocode => TwitterArgs.CommandOptions.Geocode,
-                            lang => TwitterArgs.CommandOptions.Lang,
-                            locale => TwitterArgs.CommandOptions.Lang,
-                            result_type => TwitterArgs.CommandOptions.Result_type,
-                            count => TwitterArgs.CommandOptions.Count,
-                            until => TwitterArgs.CommandOptions.Until,
-                            since_id => TwitterArgs.CommandOptions.Since_id,
-                            max_id => TwitterArgs.CommandOptions.Max_id,
-                            include_entities => TwitterArgs.CommandOptions.Include_entities
+                        long last_id = -1;
+
+                        while (last_id != 0)
+                        {
+
+                            // 検索
+                            var result = TwitterAPI.Token.Search.Tweets(
+                                q => TwitterArgs.CommandOptions.Q,
+                                geocode => TwitterArgs.CommandOptions.Geocode,
+                                lang => TwitterArgs.CommandOptions.Lang,
+                                locale => TwitterArgs.CommandOptions.Locale,
+                                result_type => TwitterArgs.CommandOptions.Result_type,
+                                count => TwitterArgs.CommandOptions.Count,
+                                until => TwitterArgs.CommandOptions.Until,
+                                since_id => TwitterArgs.CommandOptions.Since_id,
+                                max_id => last_id < 0 ? null : last_id,
+                                include_entities => TwitterArgs.CommandOptions.Include_entities
                             );
 
-                        Console.WriteLine(result.Json);
-                        Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
 
-                        OutputJSON(result.Json, action);
+                            
+
+                            OutputJSON(result.Json, action);
+                            System.Threading.Thread.Sleep(1000);
+
+                            var last = result.LastOrDefault();
+
+                            if (last != null)
+                            {
+                                last_id = last.Id;
+                            }
+
+                            // 残り回数が0なら待つ抜ける
+                            if (last_id != 0 && result.RateLimit.Remaining == 0)
+                            {
+                                //System.Threading.Thread.Sleep(15 * 60 * 1000);
+                                break;
+                            }
+                        }
+
                         break;
                     }
                 case "application/rate_limit_status":
@@ -165,50 +189,86 @@ namespace FollowBackCore
                     }
                 case "blocks/ids":
                     {
-                        // 検索
-                        var result = TwitterAPI.Token.Blocks.Ids(cursor=>TwitterArgs.CommandOptions.Cursor);
+                        long next_cursor = -1;
 
-                        Console.WriteLine(result.Json);
-                        Console.WriteLine();
-                        Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+                        while (next_cursor != 0)
+                        {
+                            // 検索
+                            var result = TwitterAPI.Token.Blocks.Ids(cursor => TwitterArgs.CommandOptions.Cursor);
 
-                        OutputJSON(result.Json, action);
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine();
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+
+                            OutputJSON(result.Json, action);
+                            next_cursor = result.NextCursor;
+                        }
 
                         break;
                     }
                 case "blocks/list":
                     {
-                        // 検索
-                        var result = TwitterAPI.Token.Blocks.List(
-                            cursor => TwitterArgs.CommandOptions.Cursor,
-                            include_entities => TwitterArgs.CommandOptions.Include_entities,
-                            skip_status => TwitterArgs.CommandOptions.Skip_status,
-                            include_ext_alt_text => TwitterArgs.CommandOptions.Include_ext_alt_text
+                        long next_cursor = -1;
+
+                        while (next_cursor != 0)
+                        {
+                            // 検索
+                            var result = TwitterAPI.Token.Blocks.List(
+                                cursor => next_cursor == -1 ? null : next_cursor,
+                                include_entities => TwitterArgs.CommandOptions.Include_entities,
+                                skip_status => TwitterArgs.CommandOptions.Skip_status,
+                                include_ext_alt_text => TwitterArgs.CommandOptions.Include_ext_alt_text
                             );
 
-                        Console.WriteLine(result.Json);
-                        Console.WriteLine();
-                        Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine();
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
 
-                        OutputJSON(result.Json, action);
+                            OutputJSON(result.Json, action);
+                            System.Threading.Thread.Sleep(1000);
+
+                            // 残り回数が0なら待つ
+                            if (result.NextCursor != 0 && result.RateLimit.Remaining == 0)
+                            {
+                                System.Threading.Thread.Sleep(15 * 60 * 1000);
+                            }
+
+                            next_cursor = result.NextCursor;
+                        }
 
                         break;
                     }
                 case "followers/ids":
                     {
-                        // 検索
-                        var result = TwitterAPI.Token.Followers.Ids(
-                            user_id => TwitterArgs.CommandOptions.User_id,
-                            screen_name => TwitterArgs.CommandOptions.Screen_name,
-                            cursor=> TwitterArgs.CommandOptions.Cursor,
-                            count=> TwitterArgs.CommandOptions.Count
+                        long next_cursor = -1;
+
+                        while (next_cursor != 0)
+                        {
+
+                            // 検索
+                            var result = TwitterAPI.Token.Followers.Ids(
+                                user_id => TwitterArgs.CommandOptions.User_id,
+                                screen_name => TwitterArgs.CommandOptions.Screen_name,
+                                cursor => next_cursor == -1 ? null : next_cursor,
+                                count => TwitterArgs.CommandOptions.Count
                             );
 
-                        Console.WriteLine(result.Json);
-                        Console.WriteLine();
-                        Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine();
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
 
-                        OutputJSON(result.Json, action);
+                            OutputJSON(result.Json, action);
+
+                            System.Threading.Thread.Sleep(1000);
+
+                            // 残り回数が0なら待つ
+                            if (result.NextCursor != 0 && result.RateLimit.Remaining == 0)
+                            {
+                                System.Threading.Thread.Sleep(15 * 60 * 1000);
+                            }
+
+                            next_cursor = result.NextCursor;
+                        }
 
                         break;
                     }
@@ -223,7 +283,7 @@ namespace FollowBackCore
                             var result = TwitterAPI.Token.Followers.List(
                                 user_id => TwitterArgs.CommandOptions.User_id,
                                 screen_name => TwitterArgs.CommandOptions.Screen_name,
-                                cursor => TwitterArgs.CommandOptions.Cursor,
+                                cursor => next_cursor == -1 ? null : next_cursor,
                                 count => TwitterArgs.CommandOptions.Count,
                                 skip_status => TwitterArgs.CommandOptions.Skip_status,
                                 include_user_entities => TwitterArgs.CommandOptions.Include_entities,
@@ -251,7 +311,45 @@ namespace FollowBackCore
 
                         break;
                     }
+                case "friends/list":
+                    {
+                        long next_cursor = -1;
 
+                        while (next_cursor != 0)
+                        {
+
+                            // 検索
+                            var result = TwitterAPI.Token.Friends.List(
+                                user_id => TwitterArgs.CommandOptions.User_id,
+                                screen_name => TwitterArgs.CommandOptions.Screen_name,
+                                cursor => next_cursor == -1 ? null : next_cursor,
+                                count => TwitterArgs.CommandOptions.Count,
+                                skip_status => TwitterArgs.CommandOptions.Skip_status,
+                                include_user_entities => TwitterArgs.CommandOptions.Include_entities,
+                                include_ext_alt_text => TwitterArgs.CommandOptions.Include_ext_alt_text,
+                                tweet_mode => TwitterArgs.CommandOptions.Tweet_mode
+                                );
+
+
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine(result.NextCursor);
+                            Console.WriteLine();
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+
+                            OutputJSON(result.Json, action);
+                            System.Threading.Thread.Sleep(1000);
+
+                            // 残り回数が0なら待つ
+                            if (result.NextCursor != 0 && result.RateLimit.Remaining == 0)
+                            {
+                                System.Threading.Thread.Sleep(15 * 60 * 1000);
+                            }
+
+                            next_cursor = result.NextCursor;
+                        }
+
+                        break;
+                    }
             }
         }
 
