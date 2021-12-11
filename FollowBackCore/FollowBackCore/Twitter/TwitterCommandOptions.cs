@@ -52,5 +52,11 @@ namespace FollowBackCore.Twitter
 
         [EndpointParam("-screen_name")]
         public string Screen_name { get; set; }
+
+        [EndpointParam("-include_user_entities")]
+        public string Include_user_entities { get; set; }
+
+        [EndpointParam("-tweet_mode")]
+        public string Tweet_mode { get; set; }
     }
 }

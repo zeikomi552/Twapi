@@ -212,6 +212,45 @@ namespace FollowBackCore
 
                         break;
                     }
+                case "followers/list":
+                    {
+                        long next_cursor = -1;
+
+                        while (next_cursor != 0)
+                        {
+
+                            // 検索
+                            var result = TwitterAPI.Token.Followers.List(
+                                user_id => TwitterArgs.CommandOptions.User_id,
+                                screen_name => TwitterArgs.CommandOptions.Screen_name,
+                                cursor => TwitterArgs.CommandOptions.Cursor,
+                                count => TwitterArgs.CommandOptions.Count,
+                                skip_status => TwitterArgs.CommandOptions.Skip_status,
+                                include_user_entities => TwitterArgs.CommandOptions.Include_entities,
+                                include_ext_alt_text => TwitterArgs.CommandOptions.Include_ext_alt_text,
+                                tweet_mode => TwitterArgs.CommandOptions.Tweet_mode
+                                );
+
+
+                            Console.WriteLine(result.Json);
+                            Console.WriteLine(result.NextCursor);
+                            Console.WriteLine();
+                            Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
+
+                            OutputJSON(result.Json, action);
+                            System.Threading.Thread.Sleep(1000);
+
+                            // 残り回数が0なら待つ
+                            if (result.NextCursor != 0 && result.RateLimit.Remaining == 0)
+                            {
+                                System.Threading.Thread.Sleep(15*60*1000);
+                            }
+
+                            next_cursor = result.NextCursor;
+                        }
+
+                        break;
+                    }
 
             }
         }
