@@ -10,9 +10,23 @@ namespace FollowBackCore.Utilities
     {
         public enum CommandTypeEnum
         {
+            /// <summary>
+            /// アクション：コマンドの動作を決定する
+            /// 例：ヘルプ、キーファイルの保存、ツイッター系のAPIエンドポイント
+            /// </summary>
             Action,
+            /// <summary>
+            /// オプション：ツイッターAPI外の指定条件
+            /// 例：出力先ディレクトリ指定
+            /// </summary>
             Option,
+            /// <summary>
+            /// パラメータ：ツイッターAPIのエンドポイントに付属するパラメータ
+            /// </summary>
             Parameter,
+            /// <summary>
+            /// キー：アクセスシークレットやトークン等
+            /// </summary>
             Keys
         }
     
