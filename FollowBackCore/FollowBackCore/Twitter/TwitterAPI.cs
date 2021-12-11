@@ -13,6 +13,16 @@ namespace FollowBackCore.Twitter
 {
     public class TwitterAPI : INotifyPropertyChanged
     {
+        public static TwitterKeys TwitterKeys { get; set; } = new TwitterKeys();
+
+        public static Tokens Token
+        {
+            get
+            {
+                return TwitterKeys.CreateToken();
+            }
+        }
+
         #region RateLimitの取得
         /// <summary>
         /// RateLimitの取得
@@ -35,7 +45,6 @@ namespace FollowBackCore.Twitter
             }
         }
         #endregion
-
 
         #region ツイート処理
         /// <summary>
@@ -63,7 +72,6 @@ namespace FollowBackCore.Twitter
 
 
         #region Tweetの検索処理
-
         /// <summary>
         /// ツイートの検索
         /// </summary>
@@ -82,6 +90,78 @@ namespace FollowBackCore.Twitter
             return result;
         }
         #endregion
+
+        #region Tweetの検索処理
+
+
+        /// <summary>
+        /// 可能な位置情報の検索
+        /// </summary>
+        /// <param name="keys">キー</param>
+        /// <returns>検索結果</returns>
+        public static ListedResponse<TrendLocation> Available(TwitterKeys keys)
+        {
+            // トークンの作成
+            var token = keys.CreateToken();
+
+            // 検索
+            var result = token.Trends.Available();
+
+            // 検索結果
+            return result;
+        }
+        #endregion
+
+        #region 位置情報の検索
+        /// <summary>
+        /// 位置情報の検索
+        /// </summary>
+        /// <param name="keys">キー</param>
+        /// <returns>検索結果</returns>
+        public static ListedResponse<TrendLocation> Closets(TwitterKeys keys, long lat, long lon)
+        {
+            // トークンの作成
+            var token = keys.CreateToken();
+
+            // 検索
+            var result = token.Trends.Closest(lat, lon);
+
+            // 検索結果
+            return result;
+        }
+        #endregion
+
+        #region 位置情報の検索
+        /// <summary>
+        /// 位置情報の検索
+        /// </summary>
+        /// <param name="keys">キー</param>
+        /// <returns>検索結果</returns>
+        public static ListedResponse<TrendsResult> Place(TwitterKeys keys, long id)
+        {
+            // トークンの作成
+            var token = keys.CreateToken();
+
+            // 検索
+            var result = token.Trends.Place(id);
+
+            // 検索結果
+            return result;
+        }
+        #endregion
+
+        public static void Test(TwitterKeys keys, string screen_name)
+        {
+            // トークンの作成
+            var token = keys.CreateToken();
+
+            // 検索
+            var result = token.Friendships.Show(screen_name=>screen_name);
+
+            // 検索結果
+            //return result;
+        }
+
 
         #region Tweetの検索処理
 
