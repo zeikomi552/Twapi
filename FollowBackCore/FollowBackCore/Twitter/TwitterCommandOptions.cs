@@ -47,5 +47,10 @@ namespace FollowBackCore.Twitter
         [EndpointParam("-include_ext_alt_text")]
         public string Include_ext_alt_text { get; set; }
 
+        [EndpointParam("-user_id")]
+        public string User_id { get; set; }
+
+        [EndpointParam("-screen_name")]
+        public string Screen_name { get; set; }
     }
 }

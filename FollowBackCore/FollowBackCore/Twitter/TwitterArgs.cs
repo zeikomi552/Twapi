@@ -123,25 +123,18 @@ namespace FollowBackCore.Twitter
                                 }
                         }
                     }
-                    // オプション系
-                    else if (check.CommandType == Command.CommandTypeEnum.Option)
-                    {
-                        switch (args[i].ToLower())
-                        {
-                            case "-d":  // ディレクトリ
-                                {
-                                    i++;
-                                    Args.Add(check.Key.ToLower(), args.Length > i ? args[i] : string.Empty);
-                                    break;
-                                }
-                        }
-                    }
-                    // アクションに対するパラメータ系
-                    else if (check.CommandType == Command.CommandTypeEnum.Parameter)
+                    else
                     {
                         i++;
                         Args.Add(check.Key.ToLower(), args.Length > i ? args[i] : string.Empty);
                     }
+                }
+                else
+                {
+                    string key = args[i++];
+                    string value = args.Length > i ? args[i] : string.Empty;
+
+                    Args.Add(key, value);
                 }
             }
 

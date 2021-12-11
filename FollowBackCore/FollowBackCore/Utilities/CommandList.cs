@@ -39,7 +39,7 @@ namespace FollowBackCore.Utilities
 
             #region blocks
             this.Items.Add(new Command("blocks/ids", "ブロックユーザーをIDで取得する", Command.CommandTypeEnum.Action, true));
-            this.Items.Add(new Command("blocks/list", "ブロックユーザーをオブジェクトで取得する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("blocks/list", "ブロックユーザーをオブジェクトで取得する", Command.CommandTypeEnum.Action, true));
             this.Items.Add(new Command("blocks/create", "ブロックを実行する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("blocks/destroy", "ブロックを解除する", Command.CommandTypeEnum.Action));
             #endregion

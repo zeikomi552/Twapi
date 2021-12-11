@@ -194,128 +194,25 @@ namespace FollowBackCore
 
                         break;
                     }
+                case "followers/ids":
+                    {
+                        // 検索
+                        var result = TwitterAPI.Token.Followers.Ids(
+                            user_id => TwitterArgs.CommandOptions.User_id,
+                            screen_name => TwitterArgs.CommandOptions.Screen_name,
+                            cursor=> TwitterArgs.CommandOptions.Cursor,
+                            count=> TwitterArgs.CommandOptions.Count
+                            );
 
+                        Console.WriteLine(result.Json);
+                        Console.WriteLine();
+                        Console.WriteLine(result.RateLimit.Remaining.ToString() + "/" + result.RateLimit.Limit.ToString());
 
+                        OutputJSON(result.Json, action);
 
+                        break;
+                    }
 
-
-
-
-
-
-
-
-                    //case "/trend.place":
-                    //    {
-                    //        // woeid https://qiita.com/hogeta_/items/8e3224c4960e19b7a33a
-
-                    //        var tmp = TwitterAPI.Place(TwitterAPI.TwitterKeys, 1117817);
-                    //        foreach (var result in tmp)
-                    //        {
-                    //            foreach (var tr in result.Trends)
-                    //            {
-                    //                Console.WriteLine(tr.Name);
-                    //            }
-                    //        }
-                    //        break;
-                    //    }
-                    //case "/test":
-                    //    {
-
-                    //        TwitterAPI.Test(TwitterAPI.TwitterKeys, "orta");
-
-                    //        break;
-                    //    }
-                    //case "/tw":
-                    //    {
-                    //        var message = _Args["message"];
-                    //        TwitterAPI.Tweet(TwitterAPI.TwitterKeys, message.Replace("\\r\\n", "\r\n"));
-                    //        break;
-                    //    }
-                    //case "/cfr":
-                    //    {
-                    //        string screen_name = _Args["screen_name"];
-                    //        TwitterAPI.CreateFollow(TwitterAPI.TwitterKeys, screen_name);
-                    //        break;
-                    //    }
-                    //case "/dfr":
-                    //    {
-                    //        string screen_name = _Args["screen_name"];
-                    //        TwitterAPI.BreakFollow(TwitterAPI.TwitterKeys, screen_name);
-                    //        break;
-                    //    }
-                    //case "/tws":
-                    //    {
-                    //        string search_key = _Args["search_keyword"];
-                    //        var ret = TwitterAPI.TweetSearch(TwitterAPI.TwitterKeys, search_key);
-                    //        SQLitePath = _Args["file_path"];
-
-                    //        using (var db = new SQLiteDataContext())
-                    //        {
-                    //            db.Database.EnsureCreated();
-                    //        }
-
-
-                    //        DateTime insert_time = DateTime.Now;
-                    //        string guid = Guid.NewGuid().ToString();
-
-                    //        foreach (var tmp in ret)
-                    //        {
-                    //            TwitterSearchResultsBase data = new TwitterSearchResultsBase();
-                    //            data.CreateDt = insert_time;
-                    //            data.Guid = guid;
-                    //            data.Id = tmp.Id;
-                    //            data.FavoritesCount = tmp.FavoriteCount;
-                    //            if (tmp.User != null)
-                    //            {
-                    //                data.UserId = tmp.User.Id;
-                    //                data.ScreenName = tmp.User.ScreenName;
-                    //                data.FriendsCount = tmp.User.FriendsCount;
-                    //                data.FollowerCount = tmp.User.FollowersCount;
-                    //            }
-
-                    //            data.Text = tmp.Text;
-
-
-                    //            TwitterSearchResultsBase.Insert(data);
-                    //        }
-
-                    //        //int index = 1;
-
-                    //        //// Excelファイルを作る
-                    //        //using (var workbook = new XLWorkbook())
-                    //        //{
-                    //        //    var worksheet = workbook.Worksheets.Add("result");
-                    //        //    // セルに値や数式をセット
-                    //        //    worksheet.Cell($"A{index}").Value = "tweet.ID";
-                    //        //    worksheet.Cell($"B{index}").Value = "user.Id";
-                    //        //    worksheet.Cell($"C{index}").Value = "screen_name";
-                    //        //    worksheet.Cell($"D{index}").Value = "text";
-                    //        //    worksheet.Cell($"E{index}").Value = "FavoriteCount";
-                    //        //    worksheet.Cell($"F{index}").Value = "user.FriendsCount";
-                    //        //    worksheet.Cell($"G{index}").Value = "user.FollowerCount";
-                    //        //    worksheet.Cell($"H{index}").Value = "CreateAt";
-
-                    //        //    foreach (var tw in ret)
-                    //        //    {
-                    //        //        index++;
-                    //        //        worksheet.Cell($"A{index}").Value = tw.Id;
-                    //        //        worksheet.Cell($"B{index}").Value = tw.User.Id;
-                    //        //        worksheet.Cell($"C{index}").Value = tw.User.ScreenName;
-                    //        //        worksheet.Cell($"D{index}").Value = tw.Text;
-                    //        //        worksheet.Cell($"E{index}").Value = tw.FavoriteCount;
-                    //        //        worksheet.Cell($"F{index}").Value = tw.User.FriendsCount;
-                    //        //        worksheet.Cell($"G{index}").Value = tw.User.FollowersCount;
-                    //        //        worksheet.Cell($"H{index}").Value = tw.CreatedAt.LocalDateTime;
-                    //        //    }
-
-                    //        //    string file_path = _Args["file_path"];
-                    //        //    // ワークブックを保存する
-                    //        //    workbook.SaveAs(file_path);
-                    //        //}
-
-                    //        break;
-                    //    }
             }
         }
 
