@@ -397,7 +397,28 @@ namespace FollowBackCore
                         }
                         break;
                     }
+                case "statuses/update":
+                    {
+                        TwitterAPI.Token.Statuses.Update(status=> TwitterArgs.CommandOptions.Status);
+                        break;
+                    }
+                case "statuses/home_timeline":
+                    {
+                        var result = TwitterAPI.Token.Statuses.HomeTimeline(
+                            count=> TwitterArgs.CommandOptions.Count,
+                            since_id=> TwitterArgs.CommandOptions.Since_id,
+                            max_id=> TwitterArgs.CommandOptions.Max_id,
+                            trim_user => TwitterArgs.CommandOptions.Trim_User,
+                            exclude_replies=> TwitterArgs.CommandOptions.Exclude_replies,
+                            contributor_details=> TwitterArgs.CommandOptions.Contributor_details,
+                            include_entities=> TwitterArgs.CommandOptions.Include_entities,
+                            include_ext_alt_text => TwitterArgs.CommandOptions.Include_ext_alt_text,
+                            tweet_mode => TwitterArgs.CommandOptions.Tweet_mode
+                        );
+                        OutputJSON(result.Json, action);
 
+                        break;
+                    }
             }
         }
 

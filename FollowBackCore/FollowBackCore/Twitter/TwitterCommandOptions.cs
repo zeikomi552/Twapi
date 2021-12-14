@@ -58,5 +58,15 @@ namespace FollowBackCore.Twitter
 
         [EndpointParam("-tweet_mode")]
         public string Tweet_mode { get; set; }
+
+        [EndpointParam("-status")]
+        public string Status { get; set; }
+
+        [EndpointParam("-trim_user")]
+        public string Trim_User { get; set; }
+        [EndpointParam("-exclude_replies")]
+        public string Exclude_replies { get; set; }
+        [EndpointParam("-contributor_details")]
+        public string Contributor_details { get; set; }
     }
 }

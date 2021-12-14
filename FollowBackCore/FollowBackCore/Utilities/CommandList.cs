@@ -87,8 +87,8 @@ namespace FollowBackCore.Utilities
             this.Items.Add(new Command("friendships/no_retweets/ids", "RT非表示中のユーザーを取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("friendships/outgoing", "自分がフォローリクエストを送ったユーザーを取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("friendships/show", "2人のユーザーの関係を取得する", Command.CommandTypeEnum.Action));
-            this.Items.Add(new Command("friendships/create", "フォローする", Command.CommandTypeEnum.Action));
-            this.Items.Add(new Command("friendships/destroy", "フォローを解除する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("friendships/create", "フォローする", Command.CommandTypeEnum.Action, true));
+            this.Items.Add(new Command("friendships/destroy", "フォローを解除する", Command.CommandTypeEnum.Action, true));
             this.Items.Add(new Command("friendships/update", "RT非表示とツイート通知の設定を更新する", Command.CommandTypeEnum.Action));
             #endregion
 
@@ -151,7 +151,7 @@ namespace FollowBackCore.Utilities
             #endregion
 
             #region statuses
-            this.Items.Add(new Command("statuses/home_timeline", "ホームタイムラインを取得する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("statuses/home_timeline", "ホームタイムラインを取得する", Command.CommandTypeEnum.Action, true));
             this.Items.Add(new Command("statuses/lookup", "複数のツイートを取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("statuses/mentions_timeline", "メンションタイムラインを取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("statuses/oembed", "ツイートの埋め込み用HTMLを取得する", Command.CommandTypeEnum.Action));
@@ -163,7 +163,7 @@ namespace FollowBackCore.Utilities
             this.Items.Add(new Command("statuses/destroy/:id", "ツイートを削除する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("statuses/retweet/:id", "リツイートを実行する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("statuses/unretweet/:id", "リツイートを取り消す", Command.CommandTypeEnum.Action));
-            this.Items.Add(new Command("statuses/update", "ツイートを投稿する", Command.CommandTypeEnum.Action));
+            this.Items.Add(new Command("statuses/update", "ツイートを投稿する", Command.CommandTypeEnum.Action, true));
             #endregion
 
             #region trends
@@ -186,11 +186,8 @@ namespace FollowBackCore.Utilities
 
             #region Keys
             this.Items.Add(new Command("-ck", "TwitterAPIを使用する際に必要となるコンシューマーキーを指定する", Command.CommandTypeEnum.Keys));
-            
             this.Items.Add(new Command("-cs", "TwitterAPIを使用する際に必要となるコンシューマーシークレットを指定する", Command.CommandTypeEnum.Keys));
-
             this.Items.Add(new Command("-at", "TwitterAPIを使用する際に必要となるアクセストークンを指定する", Command.CommandTypeEnum.Keys));
-
             this.Items.Add(new Command("-as", "TwitterAPIを使用する際に必要となるアクセスシークレットを指定する", Command.CommandTypeEnum.Keys));
 
             #endregion
