@@ -83,7 +83,7 @@ namespace FollowBackCore.Twitter
                 if (check != null)
                 {
                     // Action系のコマンドかどうかを確認する
-                    if (check.CommandType == Command.CommandTypeEnum.Action)
+                    if (check.CommandType == Utilities.Command.CommandTypeEnum.Action)
                     {
                         // アクションキーが存在しないことを確認する
                         if (!Args.ContainsKey("action"))
@@ -93,7 +93,7 @@ namespace FollowBackCore.Twitter
                         }
                     }
                     // コンシューマーキーなどのキー系かどうかを確認する
-                    else if (check.CommandType == Command.CommandTypeEnum.Keys)
+                    else if (check.CommandType == Utilities.Command.CommandTypeEnum.Keys)
                     {
                         switch (args[i].ToLower())
                         {

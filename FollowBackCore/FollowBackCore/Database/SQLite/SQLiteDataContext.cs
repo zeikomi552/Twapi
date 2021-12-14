@@ -22,7 +22,7 @@ namespace FollowBackCore.Database.SQLite
 
 
         // 最初にココを変更する
-        string db_file_path = Program.SQLitePath;
+        string db_file_path = TwCommand.SQLitePath;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
