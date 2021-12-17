@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace Twapi.Twitter
 {
+    /// <summary>
+    /// 参考：
+    /// http://westplain.sakuraweb.com/translate/twitter/Documentation/REST-APIs/Public-API/REST-APIs.cgi
+    /// </summary>
     public class TwitterAPI : INotifyPropertyChanged
     {
         public static TwitterKeys TwitterKeys { get; set; } = new TwitterKeys();

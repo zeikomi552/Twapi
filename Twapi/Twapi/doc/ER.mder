@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<TableListM xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TableItems>
+    <Items>
+      <TableM>
+        <Name>FollowList</Name>
+        <Description>フォローリスト</Description>
+        <CreateDate>2021-12-18T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>ユーザーID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendAt</Name>
+              <Description>フォロー日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsFriend</Name>
+              <Description>フォローしているかどうか</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowBackAt</Name>
+              <Description>フォロー確認日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsFollowBack</Name>
+              <Description>フォローされているかどうか</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+    </Items>
+  </TableItems>
+</TableListM>

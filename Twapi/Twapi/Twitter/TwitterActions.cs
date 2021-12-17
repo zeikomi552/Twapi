@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twapi.Database.SQLite.Base;
+using Twapi.Database.SQLite;
 
 namespace Twapi.Twitter
 {
@@ -21,7 +23,8 @@ namespace Twapi.Twitter
             new TwitterAction("friendships/create", FriendshipsCreate),
             new TwitterAction("friendships/destroy", FriendshipsDestroy),
             new TwitterAction("friends/list", FriendshipsDestroy),
-            new TwitterAction("followers/list", FriendshipsDestroy)
+            new TwitterAction("followers/list", FriendshipsDestroy),
+            new TwitterAction("followbacklist/create", FollowbacklistCreate)
         };
 
 
@@ -371,6 +374,128 @@ namespace Twapi.Twitter
             }
         }
         #endregion
+
+        private static List<long> GetFriendList(string screen_name)
+        {
+            long cursor = -1;
+            List<long> ret = new List<long>();
+            while (cursor != 0)
+            {
+                var result = TwitterAPI.Token.Friends.Ids(screen_name, cursor < 0 ? null : cursor, 5000);
+
+                ret.AddRange(result);
+                var cusor = result.NextCursor;
+
+                if (result.RateLimit.Remaining <= 0)
+                {
+                    System.Threading.Thread.Sleep(15 * 60 * 1000);
+                }
+
+            }
+
+            return ret;
+        }
+
+        private static List<long> GetFollowList(string screen_name)
+        {
+            long cursor = -1;
+            List<long> ret = new List<long>();
+            while (cursor != 0)
+            {
+                var result = TwitterAPI.Token.Followers.Ids(screen_name, cursor < 0 ? null : cursor, 5000);
+                ret.AddRange(result);
+                var cusor = result.NextCursor;
+
+                if (result.RateLimit.Remaining <= 0)
+                {
+                    System.Threading.Thread.Sleep(15 * 60 * 1000);
+                }
+            }
+
+            return ret;
+        }
+
+        #region フォロバリストの自分のフォロワーとフォロー情報を更新する
+        /// <summary>
+        /// フォロバリストの自分のフォロワーとフォロー情報を更新する
+        /// </summary>
+        private static void UpdateFollowBackList()
+        {
+            try
+            {
+                // データベースの存在保証
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+                }
+
+                // 自分のアカウントの情報取得
+                var settings = TwitterAPI.Token.Account.Settings();
+
+                // フォローリストの取得
+                var friends_list = GetFriendList(settings.ScreenName);
+
+                // フォロワーリストの取得
+                var follower_list = GetFollowList(settings.ScreenName);
+
+                // フレンドを確認
+                foreach (var friend_id in friends_list)
+                {
+                    // データベース上に登録されているかを確認
+                    var friend = FollowListBase.Select().Where(x => x.UserId.Equals(friend_id));
+
+                    // 存在しないならデータの作成
+                    if (!friend.Any())
+                    {
+                        var is_follower = (from x in follower_list
+                                           where x.Equals(friend_id)
+                                           select x).Any();
+
+                        FollowListBase.Insert(new FollowListBase()
+                        {
+                            FollowBackAt = is_follower ? DateTime.Now : null,
+                            IsFollowBack = is_follower,
+                            FriendAt = DateTime.Now,
+                            IsFriend = true,
+                            UserId = friend_id
+                        });
+                    }
+                    // 存在するならアップデート
+                    else
+                    {
+                        var update = new FollowListBase();
+                        friend.First().Copy(update);
+                        FollowListBase.Update(update, update);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        public static void FollowbacklistCreate(string action)
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+                }
+
+                // フォローバックリストの更新
+                UpdateFollowBackList();
+
+
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
         #endregion
     }
 }

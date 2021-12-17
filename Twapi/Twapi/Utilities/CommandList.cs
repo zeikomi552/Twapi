@@ -183,6 +183,13 @@ namespace Twapi.Utilities
             this.Items.Add(new Command("users/suggestions/:slug/members", "おすすめユーザーをツイート付きで取得する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("users/report_spam", "スパム報告を実行する", Command.CommandTypeEnum.Action));
             #endregion
+
+            #region orignal
+            this.Items.Add(new Command("followbacklist/create", "フォロバリストを作成する", Command.CommandTypeEnum.Action));
+
+
+
+            #endregion
             #endregion
 
             #region Keys
@@ -195,7 +202,7 @@ namespace Twapi.Utilities
 
             #region Options
             this.Items.Add(new Command("-d", "出力先ディレクトリを指定します", Command.CommandTypeEnum.Option));
-            this.Items.Add(new Command("-sql", "SqLiteで出力します", Command.CommandTypeEnum.Option));
+            this.Items.Add(new Command("-sql", "保存先のSqLiteファイルを指定します(-dとは併用できません)", Command.CommandTypeEnum.Option));
             this.Items.Add(new Command("-json", "JSONファイルで出力します(デフォルト)", Command.CommandTypeEnum.Option));
             #endregion
 
