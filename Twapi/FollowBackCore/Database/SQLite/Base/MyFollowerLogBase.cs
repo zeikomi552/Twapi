@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Database.SQLite.Base
+namespace Twapi.Database.SQLite.Base
 {
 	/// <summary>
-	/// 自分のフォローしている人のリストログ
-	/// MyFriendsLogテーブルをベースに作成しています
+	/// 自分のフォロワーのリストログ
+	/// MyFollowerLogテーブルをベースに作成しています
 	/// 作成日：2021/12/09 作成者gohya
 	/// </summary>
-	[Table("MyFriendsLog")]
-	public class MyFriendsLogBase : INotifyPropertyChanged
+	[Table("MyFollowerLog")]
+	public class MyFollowerLogBase : INotifyPropertyChanged
 	{
 		#region パラメータ
 		#region 確認した日[CreateDt]プロパティ
@@ -71,13 +71,13 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 
-		#region フォローしているユーザーのId[UserId]プロパティ
+		#region フォロワーのユーザーId[UserId]プロパティ
 		/// <summary>
-		/// フォローしているユーザーのId[UserId]プロパティ用変数
+		/// フォロワーのユーザーId[UserId]プロパティ用変数
 		/// </summary>
 		long _UserId = 0;
 		/// <summary>
-		/// フォローしているユーザーのId[UserId]プロパティ
+		/// フォロワーのユーザーId[UserId]プロパティ
 		/// </summary>
 		[Key]
 		[Column("UserId")]
@@ -202,58 +202,6 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 
-		#region 最終ツイート日[LastTweetDt]プロパティ
-		/// <summary>
-		/// 最終ツイート日[LastTweetDt]プロパティ用変数
-		/// </summary>
-		DateTime? _LastTweetDt = null;
-		/// <summary>
-		/// 最終ツイート日[LastTweetDt]プロパティ
-		/// </summary>
-		[Column("LastTweetDt")]
-		public DateTime? LastTweetDt
-		{
-			get
-			{
-				return _LastTweetDt;
-			}
-			set
-			{
-				if (!_LastTweetDt.Equals(value))
-				{
-					_LastTweetDt = value;
-					NotifyPropertyChanged("LastTweetDt");
-				}
-			}
-		}
-		#endregion
-
-		#region ツイート数[TweetCount]プロパティ
-		/// <summary>
-		/// ツイート数[TweetCount]プロパティ用変数
-		/// </summary>
-		long _TweetCount = 0;
-		/// <summary>
-		/// ツイート数[TweetCount]プロパティ
-		/// </summary>
-		[Column("TweetCount")]
-		public long TweetCount
-		{
-			get
-			{
-				return _TweetCount;
-			}
-			set
-			{
-				if (!_TweetCount.Equals(value))
-				{
-					_TweetCount = value;
-					NotifyPropertyChanged("TweetCount");
-				}
-			}
-		}
-		#endregion
-
 
 		#endregion
 
@@ -262,7 +210,7 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public MyFriendsLogBase()
+		public MyFollowerLogBase()
 		{
 
 		}
@@ -273,7 +221,7 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public MyFriendsLogBase(MyFriendsLogBase item)
+		public MyFollowerLogBase(MyFollowerLogBase item)
 		{
 			// 要素のコピー
 			Copy(item);
@@ -285,7 +233,7 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// コピー
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public void Copy(MyFriendsLogBase item)
+		public void Copy(MyFollowerLogBase item)
 		{
 			this.CreateDt = item.CreateDt;
 
@@ -301,10 +249,6 @@ namespace FollowBackCore.Database.SQLite.Base
 
 			this.FollowerCount = item.FollowerCount;
 
-			this.LastTweetDt = item.LastTweetDt;
-
-			this.TweetCount = item.TweetCount;
-
 
 		}
 		#endregion
@@ -314,12 +258,12 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Insert処理
 		/// </summary>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(MyFriendsLogBase item)
+		public static void Insert(MyFollowerLogBase item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
 				// Insert
-				db.Add<MyFriendsLogBase>(item);
+				db.Add<MyFollowerLogBase>(item);
 
 				// コミット
 				db.SaveChanges();
@@ -333,11 +277,11 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// </summary>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(MyFriendsLogBase pk_item, MyFriendsLogBase update_item)
+		public static void Update(MyFollowerLogBase pk_item, MyFollowerLogBase update_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				var item = db.DbSet_MyFriendsLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
+				var item = db.DbSet_MyFollowerLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
 
 				if (item != null)
 				{
@@ -353,14 +297,14 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Delete処理
 		/// </summary>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(MyFriendsLogBase pk_item)
+		public static void Delete(MyFollowerLogBase pk_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				var item = db.DbSet_MyFriendsLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
+				var item = db.DbSet_MyFollowerLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
 				if (item != null)
 				{
-					db.DbSet_MyFriendsLog.Remove(item);
+					db.DbSet_MyFollowerLog.Remove(item);
 					db.SaveChanges();
 				}
 			}
@@ -372,11 +316,11 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Select処理
 		/// </summary>
 		/// <returns>全件取得</returns>
-		public static List<MyFriendsLogBase> Select()
+		public static List<MyFollowerLogBase> Select()
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				return db.DbSet_MyFriendsLog.ToList<MyFriendsLogBase>();
+				return db.DbSet_MyFollowerLog.ToList<MyFollowerLogBase>();
 			}
 		}
 		#endregion

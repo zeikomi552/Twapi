@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Database.SQLite.Base
+namespace Twapi.Database.SQLite.Base
 {
 	/// <summary>
 	/// フォローした履歴

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace FollowBackCore.Utilities
+namespace Twapi.Utilities
 {
     /// <summary>
     /// XMLのユーティリティクラス

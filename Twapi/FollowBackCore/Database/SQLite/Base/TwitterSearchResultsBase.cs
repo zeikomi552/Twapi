@@ -7,24 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Database.SQLite.Base
+namespace Twapi.Database.SQLite.Base
 {
 	/// <summary>
-	/// 自分のフォロワーのリストログ
-	/// MyFollowerLogテーブルをベースに作成しています
+	/// 検索結果テーブル
+	/// TwitterSearchResultsテーブルをベースに作成しています
 	/// 作成日：2021/12/09 作成者gohya
 	/// </summary>
-	[Table("MyFollowerLog")]
-	public class MyFollowerLogBase : INotifyPropertyChanged
+	[Table("TwitterSearchResults")]
+	public class TwitterSearchResultsBase : INotifyPropertyChanged
 	{
 		#region パラメータ
-		#region 確認した日[CreateDt]プロパティ
+		#region 検索日時[CreateDt]プロパティ
 		/// <summary>
-		/// 確認した日[CreateDt]プロパティ用変数
+		/// 検索日時[CreateDt]プロパティ用変数
 		/// </summary>
 		DateTime _CreateDt = DateTime.MinValue;
 		/// <summary>
-		/// 確認した日[CreateDt]プロパティ
+		/// 検索日時[CreateDt]プロパティ
 		/// </summary>
 		[Key]
 		[Column("CreateDt")]
@@ -45,13 +45,13 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 
-		#region 同一タイミングの操作であることを示すGuid[Guid]プロパティ
+		#region 同一タイミングの操作であることを示す[Guid]プロパティ
 		/// <summary>
-		/// 同一タイミングの操作であることを示すGuid[Guid]プロパティ用変数
+		/// 同一タイミングの操作であることを示す[Guid]プロパティ用変数
 		/// </summary>
 		String _Guid = string.Empty;
 		/// <summary>
-		/// 同一タイミングの操作であることを示すGuid[Guid]プロパティ
+		/// 同一タイミングの操作であることを示す[Guid]プロパティ
 		/// </summary>
 		[Column("Guid")]
 		public String Guid
@@ -71,17 +71,43 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 
-		#region フォロワーのユーザーId[UserId]プロパティ
+		#region ツイートID[Id]プロパティ
 		/// <summary>
-		/// フォロワーのユーザーId[UserId]プロパティ用変数
+		/// ツイートID[Id]プロパティ用変数
 		/// </summary>
-		long _UserId = 0;
+		long _Id = 0;
 		/// <summary>
-		/// フォロワーのユーザーId[UserId]プロパティ
+		/// ツイートID[Id]プロパティ
 		/// </summary>
 		[Key]
+		[Column("Id")]
+		public long Id
+		{
+			get
+			{
+				return _Id;
+			}
+			set
+			{
+				if (!_Id.Equals(value))
+				{
+					_Id = value;
+					NotifyPropertyChanged("Id");
+				}
+			}
+		}
+		#endregion
+
+		#region ツイートユーザーID[UserId]プロパティ
+		/// <summary>
+		/// ツイートユーザーID[UserId]プロパティ用変数
+		/// </summary>
+		long? _UserId = 0;
+		/// <summary>
+		/// ツイートユーザーID[UserId]プロパティ
+		/// </summary>
 		[Column("UserId")]
-		public long UserId
+		public long? UserId
 		{
 			get
 			{
@@ -128,12 +154,12 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// <summary>
 		/// いいね数[FavoritesCount]プロパティ用変数
 		/// </summary>
-		long _FavoritesCount = 0;
+		long? _FavoritesCount = 0;
 		/// <summary>
 		/// いいね数[FavoritesCount]プロパティ
 		/// </summary>
 		[Column("FavoritesCount")]
-		public long FavoritesCount
+		public long? FavoritesCount
 		{
 			get
 			{
@@ -202,6 +228,32 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 
+		#region ツイート内容[Text]プロパティ
+		/// <summary>
+		/// ツイート内容[Text]プロパティ用変数
+		/// </summary>
+		String _Text = string.Empty;
+		/// <summary>
+		/// ツイート内容[Text]プロパティ
+		/// </summary>
+		[Column("Text")]
+		public String Text
+		{
+			get
+			{
+				return _Text;
+			}
+			set
+			{
+				if (!_Text.Equals(value))
+				{
+					_Text = value;
+					NotifyPropertyChanged("Text");
+				}
+			}
+		}
+		#endregion
+
 
 		#endregion
 
@@ -210,7 +262,7 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public MyFollowerLogBase()
+		public TwitterSearchResultsBase()
 		{
 
 		}
@@ -221,7 +273,7 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public MyFollowerLogBase(MyFollowerLogBase item)
+		public TwitterSearchResultsBase(TwitterSearchResultsBase item)
 		{
 			// 要素のコピー
 			Copy(item);
@@ -233,11 +285,13 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// コピー
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public void Copy(MyFollowerLogBase item)
+		public void Copy(TwitterSearchResultsBase item)
 		{
 			this.CreateDt = item.CreateDt;
 
 			this.Guid = item.Guid;
+
+			this.Id = item.Id;
 
 			this.UserId = item.UserId;
 
@@ -249,6 +303,8 @@ namespace FollowBackCore.Database.SQLite.Base
 
 			this.FollowerCount = item.FollowerCount;
 
+			this.Text = item.Text;
+
 
 		}
 		#endregion
@@ -258,12 +314,12 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Insert処理
 		/// </summary>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(MyFollowerLogBase item)
+		public static void Insert(TwitterSearchResultsBase item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
 				// Insert
-				db.Add<MyFollowerLogBase>(item);
+				db.Add<TwitterSearchResultsBase>(item);
 
 				// コミット
 				db.SaveChanges();
@@ -277,11 +333,11 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// </summary>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(MyFollowerLogBase pk_item, MyFollowerLogBase update_item)
+		public static void Update(TwitterSearchResultsBase pk_item, TwitterSearchResultsBase update_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				var item = db.DbSet_MyFollowerLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
+				var item = db.DbSet_TwitterSearchResults.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.Id.Equals(pk_item.Id));
 
 				if (item != null)
 				{
@@ -297,14 +353,14 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Delete処理
 		/// </summary>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(MyFollowerLogBase pk_item)
+		public static void Delete(TwitterSearchResultsBase pk_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				var item = db.DbSet_MyFollowerLog.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.UserId.Equals(pk_item.UserId));
+				var item = db.DbSet_TwitterSearchResults.SingleOrDefault(x => x.CreateDt.Equals(pk_item.CreateDt) && x.Id.Equals(pk_item.Id));
 				if (item != null)
 				{
-					db.DbSet_MyFollowerLog.Remove(item);
+					db.DbSet_TwitterSearchResults.Remove(item);
 					db.SaveChanges();
 				}
 			}
@@ -316,11 +372,11 @@ namespace FollowBackCore.Database.SQLite.Base
 		/// Select処理
 		/// </summary>
 		/// <returns>全件取得</returns>
-		public static List<MyFollowerLogBase> Select()
+		public static List<TwitterSearchResultsBase> Select()
 		{
 			using (var db = new SQLiteDataContext())
 			{
-				return db.DbSet_MyFollowerLog.ToList<MyFollowerLogBase>();
+				return db.DbSet_TwitterSearchResults.ToList<TwitterSearchResultsBase>();
 			}
 		}
 		#endregion
@@ -338,5 +394,4 @@ namespace FollowBackCore.Database.SQLite.Base
 		}
 		#endregion
 	}
-
 }

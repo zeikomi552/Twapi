@@ -1,4 +1,4 @@
-﻿using FollowBackCore.Utilities;
+﻿using Twapi.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Twitter
+namespace Twapi.Twitter
 {
     [AttributeUsage(AttributeTargets.Property)]
     class EndpointParamAttribute : Attribute

@@ -1,6 +1,6 @@
 ﻿using CoreTweet;
 using CoreTweet.Core;
-using FollowBackCore.Utilities;
+using Twapi.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Twitter
+namespace Twapi.Twitter
 {
     public class TwitterAPI : INotifyPropertyChanged
     {

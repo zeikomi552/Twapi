@@ -1,15 +1,15 @@
 ﻿using ClosedXML.Excel;
-using FollowBackCore.Database.SQLite;
-using FollowBackCore.Database.SQLite.Base;
-using FollowBackCore.Twitter;
-using FollowBackCore.Utilities;
+using Twapi.Database.SQLite;
+using Twapi.Database.SQLite.Base;
+using Twapi.Twitter;
+using Twapi.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
 
-namespace FollowBackCore
+namespace Twapi
 {
     class Program
     {

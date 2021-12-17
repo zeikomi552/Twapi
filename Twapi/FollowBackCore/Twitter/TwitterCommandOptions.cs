@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Twitter
+namespace Twapi.Twitter
 {
     public class TwitterCommandOptions
     {

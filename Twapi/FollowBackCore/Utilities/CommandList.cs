@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FollowBackCore.Utilities
+namespace Twapi.Utilities
 {
     public class CommandList
     {
@@ -20,6 +20,7 @@ namespace FollowBackCore.Utilities
             this.Items.Add(new Command("regist", 
                 "コンシューマーキー・コンシューマーシークレット・アクセストークン・アクセスシークレットを保存します。",
                 Command.CommandTypeEnum.Action, true));
+            this.Items.Add(new Command("/test", "debug用", Command.CommandTypeEnum.Action, true));
 
             #region ActionCommand
             #region account
