@@ -19,35 +19,101 @@
             </TableParameterM>
             <TableParameterM>
               <PrimaryKey>false</PrimaryKey>
-              <NotNull>false</NotNull>
+              <NotNull>true</NotNull>
               <Type>DateTime</Type>
               <Size xsi:nil="true" />
-              <Name>FriendAt</Name>
-              <Description>フォロー日時</Description>
+              <Name>CreateAt</Name>
+              <Description>作成日時</Description>
             </TableParameterM>
             <TableParameterM>
               <PrimaryKey>false</PrimaryKey>
               <NotNull>true</NotNull>
               <Type>bool</Type>
               <Size xsi:nil="true" />
-              <Name>IsFriend</Name>
-              <Description>フォローしているかどうか</Description>
+              <Name>IsExclude</Name>
+              <Description>除外フラグ(フォロー済など)</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>Reason</Name>
+              <Description>除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>FrinedsLog</Name>
+        <Description>フォローログ</Description>
+        <CreateDate>2021-12-18T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>ユーザーID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowAt</Name>
+              <Description>フォローした日</Description>
             </TableParameterM>
             <TableParameterM>
               <PrimaryKey>false</PrimaryKey>
               <NotNull>false</NotNull>
               <Type>DateTime</Type>
               <Size xsi:nil="true" />
-              <Name>FollowBackAt</Name>
-              <Description>フォロー確認日時</Description>
+              <Name>RemoveAt</Name>
+              <Description>リムーブ（解除）した日</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>FollowersLog</Name>
+        <Description>フォロワーログ</Description>
+        <CreateDate>2021-12-18T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>ユーザーId</Description>
             </TableParameterM>
             <TableParameterM>
               <PrimaryKey>false</PrimaryKey>
               <NotNull>true</NotNull>
-              <Type>bool</Type>
+              <Type>DateTime</Type>
               <Size xsi:nil="true" />
-              <Name>IsFollowBack</Name>
-              <Description>フォローされているかどうか</Description>
+              <Name>FollowerAt</Name>
+              <Description>フォロワーになったことを確認した日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>RemoveAt</Name>
+              <Description>解除されたことを確認した日</Description>
             </TableParameterM>
           </Items>
         </ParameterItems>

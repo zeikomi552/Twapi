@@ -12,10 +12,12 @@ namespace Twapi.Database.SQLite
     public class SQLiteDataContext : DbContext
     {
         public DbSet<FollowListBase> DbSet_FollowList { get; internal set; }
+        public DbSet<FrinedsLogBase> DbSet_FrinedsLog { get; internal set; }
+        public DbSet<FollowersLogBase> DbSet_FollowersLog { get; internal set; }
 
 
         // 最初にココを変更する
-        string db_file_path = @"Twapi.db";
+        string db_file_path = @"twapi.db";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,6 +28,8 @@ namespace Twapi.Database.SQLite
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FollowListBase>().HasKey(c => new { c.UserId });
+            modelBuilder.Entity<FrinedsLogBase>().HasKey(c => new { c.UserId });
+            modelBuilder.Entity<FollowersLogBase>().HasKey(c => new { c.UserId });
 
         }
     }

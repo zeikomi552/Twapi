@@ -375,17 +375,28 @@ namespace Twapi.Twitter
         }
         #endregion
 
+        #region フォローリストの取得処理
+        /// <summary>
+        /// フォローリストの取得処理
+        /// </summary>
+        /// <param name="screen_name">スクリーン名</param>
+        /// <returns>フォローリスト</returns>
         private static List<long> GetFriendList(string screen_name)
         {
             long cursor = -1;
             List<long> ret = new List<long>();
             while (cursor != 0)
             {
+                // フレンドの取得
                 var result = TwitterAPI.Token.Friends.Ids(screen_name, cursor < 0 ? null : cursor, 5000);
 
+                // 登録処理
                 ret.AddRange(result);
-                var cusor = result.NextCursor;
 
+                // 次のカーソル取得
+                cursor = result.NextCursor;
+
+                // RateLimit確認
                 if (result.RateLimit.Remaining <= 0)
                 {
                     System.Threading.Thread.Sleep(15 * 60 * 1000);
@@ -395,25 +406,212 @@ namespace Twapi.Twitter
 
             return ret;
         }
+        #endregion
 
-        private static List<long> GetFollowList(string screen_name)
+        #region フォローリストのSQLite登録
+        /// <summary>
+        /// フォローリストのSQLite登録
+        /// </summary>
+        private static void RegistFriendList()
+        {
+            try
+            {
+                // 自分のアカウントの情報取得
+                var settings = TwitterAPI.Token.Account.Settings();
+
+                var rate_limit = TwitterAPI.Token.Application.RateLimitStatus();
+
+                var tmp = rate_limit.Values.ElementAt(33).Values.ElementAt(0);
+                Console.WriteLine(rate_limit.Values.ElementAt(33).Values.ElementAt(0).Reset.LocalDateTime);
+
+                // データベース上に登録されているかを確認
+                var db_friends = FrinedsLogBase.Select();
+
+                using (var db = new SQLiteDataContext())
+                {
+                    try
+                    {
+                        // データベースの存在確認
+                        db.Database.EnsureCreated();
+
+                        // トランザクションをかける
+                        db.Database.BeginTransaction();
+
+                        // フォローリストの取得
+                        var api_frineds = GetFriendList(settings.ScreenName);
+
+                        foreach (var db_friend in db_friends)
+                        {
+                            // DBとAPIで取得したデータの相違
+                            if (!(from x in api_frineds where x.Equals(db_friend.UserId) select x).Any())
+                            {
+                                var update = new FrinedsLogBase();
+                                // コピー処理
+                                update.Copy(db_friend);
+
+                                // 解除したことを確認した時刻をセット
+                                update.RemoveAt = DateTime.Now;
+
+                                // データの更新
+                                FrinedsLogBase.Update(db, update, update);
+                            }
+                        }
+
+                        // フレンドを確認
+                        foreach (var api_frined in api_frineds)
+                        {
+                            // データベース上に登録されているかを確認
+                            var db_friend = db_friends.Where(x => x.UserId.Equals(api_frined));
+
+                            // 存在しないならデータの作成
+                            if (!db_friend.Any())
+                            {
+                                FrinedsLogBase.Insert(db, new FrinedsLogBase()
+                                {
+                                    UserId = api_frined,
+                                    FollowAt = DateTime.Now,
+                                    RemoveAt = null
+                                });
+                            }
+                            // 存在するならアップデート
+                            else
+                            {
+                                var update = new FrinedsLogBase();
+                                update.Copy(db_friend.First());
+                                FrinedsLogBase.Update(db, update, update);
+                            }
+                        }
+                        db.SaveChanges();
+                        db.Database.CommitTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        db.Database.RollbackTransaction();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region フォロワーリストの取得処理
+        /// <summary>
+        /// フォロワーリストの取得処理
+        /// </summary>
+        /// <param name="screen_name">スクリーン名</param>
+        /// <returns>フォロワーリスト</returns>
+        private static List<long> GetFollowerList(string screen_name)
         {
             long cursor = -1;
             List<long> ret = new List<long>();
             while (cursor != 0)
             {
+                // フォロワーリストの取得
                 var result = TwitterAPI.Token.Followers.Ids(screen_name, cursor < 0 ? null : cursor, 5000);
                 ret.AddRange(result);
                 var cusor = result.NextCursor;
 
+                // RateLimitの角煮
                 if (result.RateLimit.Remaining <= 0)
                 {
                     System.Threading.Thread.Sleep(15 * 60 * 1000);
                 }
+                cursor = result.NextCursor;
             }
 
             return ret;
         }
+        #endregion
+
+        #region フォロワーリストのSQLite登録
+        /// <summary>
+        /// フォロワーリストのSQLite登録
+        /// </summary>
+        private static void RegistFollowerList()
+        {
+            try
+            {
+                // 自分のアカウントの情報取得
+                var settings = TwitterAPI.Token.Account.Settings();
+
+                // データベース上に登録されているかを確認
+                var db_friends = FollowersLogBase.Select();
+
+                using (var db = new SQLiteDataContext())
+                {
+                    try
+                    {
+                        // データベースの存在確認
+                        db.Database.EnsureCreated();
+
+                        // トランザクションをかける
+                        db.Database.BeginTransaction();
+
+                        // フォローリストの取得
+                        var api_frineds = GetFollowerList(settings.ScreenName);
+
+                        foreach (var db_friend in db_friends)
+                        {
+                            // DBとAPIで取得したデータの相違
+                            if (!(from x in api_frineds where x.Equals(db_friend.UserId) select x).Any())
+                            {
+                                var update = new FollowersLogBase();
+                                // コピー処理
+                                update.Copy(db_friend);
+
+                                // 解除したことを確認した時刻をセット
+                                update.RemoveAt = DateTime.Now;
+
+                                // データの更新
+                                FollowersLogBase.Update(db, update, update);
+                            }
+                        }
+
+                        // フレンドを確認
+                        foreach (var api_frined in api_frineds)
+                        {
+                            // データベース上に登録されているかを確認
+                            var db_friend = db_friends.Where(x => x.UserId.Equals(api_frined));
+
+                            // 存在しないならデータの作成
+                            if (!db_friend.Any())
+                            {
+                                FollowersLogBase.Insert(db, new FollowersLogBase()
+                                {
+                                    UserId = api_frined,
+                                    FollowerAt = DateTime.Now,
+                                    RemoveAt = null
+                                });
+                            }
+                            // 存在するならアップデート
+                            else
+                            {
+                                var update = new FollowersLogBase();
+                                update.Copy(db_friend.First());
+                                FollowersLogBase.Update(db, update, update);
+                            }
+                        }
+                        db.SaveChanges();
+                        db.Database.CommitTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        db.Database.RollbackTransaction();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
 
         #region フォロバリストの自分のフォロワーとフォロー情報を更新する
         /// <summary>
@@ -432,42 +630,11 @@ namespace Twapi.Twitter
                 // 自分のアカウントの情報取得
                 var settings = TwitterAPI.Token.Account.Settings();
 
-                // フォローリストの取得
-                var friends_list = GetFriendList(settings.ScreenName);
-
                 // フォロワーリストの取得
-                var follower_list = GetFollowList(settings.ScreenName);
+                RegistFollowerList();
 
-                // フレンドを確認
-                foreach (var friend_id in friends_list)
-                {
-                    // データベース上に登録されているかを確認
-                    var friend = FollowListBase.Select().Where(x => x.UserId.Equals(friend_id));
-
-                    // 存在しないならデータの作成
-                    if (!friend.Any())
-                    {
-                        var is_follower = (from x in follower_list
-                                           where x.Equals(friend_id)
-                                           select x).Any();
-
-                        FollowListBase.Insert(new FollowListBase()
-                        {
-                            FollowBackAt = is_follower ? DateTime.Now : null,
-                            IsFollowBack = is_follower,
-                            FriendAt = DateTime.Now,
-                            IsFriend = true,
-                            UserId = friend_id
-                        });
-                    }
-                    // 存在するならアップデート
-                    else
-                    {
-                        var update = new FollowListBase();
-                        friend.First().Copy(update);
-                        FollowListBase.Update(update, update);
-                    }
-                }
+                // フォローリストの取得
+                RegistFriendList();
             }
             catch (Exception e)
             {
@@ -487,9 +654,6 @@ namespace Twapi.Twitter
 
                 // フォローバックリストの更新
                 UpdateFollowBackList();
-
-
-
             }
             catch (Exception e)
             {

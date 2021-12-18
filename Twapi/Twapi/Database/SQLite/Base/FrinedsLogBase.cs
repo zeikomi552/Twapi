@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 namespace Twapi.Database.SQLite.Base
 {
 	/// <summary>
-	/// フォローリスト
-	/// FollowListテーブルをベースに作成しています
+	/// フォローログ
+	/// FrinedsLogテーブルをベースに作成しています
 	/// 作成日：2021/12/18 作成者gohya
 	/// </summary>
-	[Table("FollowList")]
-	public class FollowListBase : INotifyPropertyChanged
+	[Table("FrinedsLog")]
+	public class FrinedsLogBase : INotifyPropertyChanged
 	{
 		#region パラメータ
 		#region ユーザーID[UserId]プロパティ
@@ -45,79 +45,53 @@ namespace Twapi.Database.SQLite.Base
 		}
 		#endregion
 
-		#region 作成日時[CreateAt]プロパティ
+		#region フォローした日[FollowAt]プロパティ
 		/// <summary>
-		/// 作成日時[CreateAt]プロパティ用変数
+		/// フォローした日[FollowAt]プロパティ用変数
 		/// </summary>
-		DateTime _CreateAt = DateTime.MinValue;
+		DateTime _FollowAt = DateTime.MinValue;
 		/// <summary>
-		/// 作成日時[CreateAt]プロパティ
+		/// フォローした日[FollowAt]プロパティ
 		/// </summary>
-		[Column("CreateAt")]
-		public DateTime CreateAt
+		[Column("FollowAt")]
+		public DateTime FollowAt
 		{
 			get
 			{
-				return _CreateAt;
+				return _FollowAt;
 			}
 			set
 			{
-				if (!_CreateAt.Equals(value))
+				if (!_FollowAt.Equals(value))
 				{
-					_CreateAt = value;
-					NotifyPropertyChanged("CreateAt");
+					_FollowAt = value;
+					NotifyPropertyChanged("FollowAt");
 				}
 			}
 		}
 		#endregion
 
-		#region 除外フラグ(フォロー済など)[IsExclude]プロパティ
+		#region リムーブ（解除）した日[RemoveAt]プロパティ
 		/// <summary>
-		/// 除外フラグ(フォロー済など)[IsExclude]プロパティ用変数
+		/// リムーブ（解除）した日[RemoveAt]プロパティ用変数
 		/// </summary>
-		bool _IsExclude = false;
+		DateTime? _RemoveAt = null;
 		/// <summary>
-		/// 除外フラグ(フォロー済など)[IsExclude]プロパティ
+		/// リムーブ（解除）した日[RemoveAt]プロパティ
 		/// </summary>
-		[Column("IsExclude")]
-		public bool IsExclude
+		[Column("RemoveAt")]
+		public DateTime? RemoveAt
 		{
 			get
 			{
-				return _IsExclude;
+				return _RemoveAt;
 			}
 			set
 			{
-				if (!_IsExclude.Equals(value))
+				if (!_RemoveAt.Equals(value))
 				{
-					_IsExclude = value;
-					NotifyPropertyChanged("IsExclude");
-				}
-			}
-		}
-		#endregion
-
-		#region 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ
-		/// <summary>
-		/// 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ用変数
-		/// </summary>
-		Int32 _Reason = 0;
-		/// <summary>
-		/// 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ
-		/// </summary>
-		[Column("Reason")]
-		public Int32 Reason
-		{
-			get
-			{
-				return _Reason;
-			}
-			set
-			{
-				if (!_Reason.Equals(value))
-				{
-					_Reason = value;
-					NotifyPropertyChanged("Reason");
+					_RemoveAt = value;
+					NotifyPropertyChanged("RemoveAt");
 				}
 			}
 		}
@@ -131,7 +105,7 @@ namespace Twapi.Database.SQLite.Base
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public FollowListBase()
+		public FrinedsLogBase()
 		{
 
 		}
@@ -142,7 +116,7 @@ namespace Twapi.Database.SQLite.Base
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public FollowListBase(FollowListBase item)
+		public FrinedsLogBase(FrinedsLogBase item)
 		{
 			// 要素のコピー
 			Copy(item);
@@ -154,15 +128,13 @@ namespace Twapi.Database.SQLite.Base
 		/// コピー
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public void Copy(FollowListBase item)
+		public void Copy(FrinedsLogBase item)
 		{
 			this.UserId = item.UserId;
 
-			this.CreateAt = item.CreateAt;
+			this.FollowAt = item.FollowAt;
 
-			this.IsExclude = item.IsExclude;
-
-			this.Reason = item.Reason;
+			this.RemoveAt = item.RemoveAt;
 
 
 		}
@@ -173,7 +145,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Insert処理
 		/// </summary>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(FollowListBase item)
+		public static void Insert(FrinedsLogBase item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -189,10 +161,10 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(SQLiteDataContext db, FollowListBase item)
+		public static void Insert(SQLiteDataContext db, FrinedsLogBase item)
 		{
 			// Insert
-			db.Add<FollowListBase>(item);
+			db.Add<FrinedsLogBase>(item);
 		}
 		#endregion
 
@@ -202,7 +174,7 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(FollowListBase pk_item, FollowListBase update_item)
+		public static void Update(FrinedsLogBase pk_item, FrinedsLogBase update_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -219,9 +191,9 @@ namespace Twapi.Database.SQLite.Base
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(SQLiteDataContext db, FollowListBase pk_item, FollowListBase update_item)
+		public static void Update(SQLiteDataContext db, FrinedsLogBase pk_item, FrinedsLogBase update_item)
 		{
-			var item = db.DbSet_FollowList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
+			var item = db.DbSet_FrinedsLog.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
 
 			if (item != null)
 			{
@@ -235,7 +207,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Delete処理
 		/// </summary>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(FollowListBase pk_item)
+		public static void Delete(FrinedsLogBase pk_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -251,12 +223,12 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(SQLiteDataContext db, FollowListBase pk_item)
+		public static void Delete(SQLiteDataContext db, FrinedsLogBase pk_item)
 		{
-			var item = db.DbSet_FollowList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
+			var item = db.DbSet_FrinedsLog.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
 			if (item != null)
 			{
-				db.DbSet_FollowList.Remove(item);
+				db.DbSet_FrinedsLog.Remove(item);
 			}
 		}
 		#endregion
@@ -266,7 +238,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Select処理
 		/// </summary>
 		/// <returns>全件取得</returns>
-		public static List<FollowListBase> Select()
+		public static List<FrinedsLogBase> Select()
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -281,9 +253,9 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <returns>全件取得</returns>
-		public static List<FollowListBase> Select(SQLiteDataContext db)
+		public static List<FrinedsLogBase> Select(SQLiteDataContext db)
 		{
-			return db.DbSet_FollowList.ToList<FollowListBase>();
+			return db.DbSet_FrinedsLog.ToList<FrinedsLogBase>();
 		}
 		#endregion
 		#endregion
