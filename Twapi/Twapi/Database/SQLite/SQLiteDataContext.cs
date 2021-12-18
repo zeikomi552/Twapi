@@ -17,7 +17,7 @@ namespace Twapi.Database.SQLite
 
 
         // 最初にココを変更する
-        string db_file_path = @"twapi.db";
+        public static string db_file_path { get; set; } = @"twapi.db";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

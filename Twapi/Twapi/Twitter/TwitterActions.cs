@@ -168,13 +168,7 @@ namespace Twapi.Twitter
         {
             try
             {
-                // Configフォルダの存在確認
-                if (!Directory.Exists("Config"))
-                {
-                    Directory.CreateDirectory("Config");
-                }
-
-                XMLUtil.Seialize<TwitterKeys>(@"Config\Keys", TwitterAPI.TwitterKeys);
+                XMLUtil.Seialize<TwitterKeys>(ConfigManager.Keys, TwitterAPI.TwitterKeys);
                 Console.WriteLine("各種キー(コンシューマーキー・コンシューマーシークレット・アクセストークン・アクセスシークレット)を保存しました");
             }
             catch (Exception e)

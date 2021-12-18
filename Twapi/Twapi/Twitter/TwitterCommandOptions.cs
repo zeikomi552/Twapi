@@ -70,5 +70,7 @@ namespace Twapi.Twitter
         public string Contributor_details { get; set; }
         [EndpointParam("-keywords")]
         public string Keywords { get; set; }
+        [EndpointParam("-sql")]
+        public string Sql { get; set; }
     }
 }

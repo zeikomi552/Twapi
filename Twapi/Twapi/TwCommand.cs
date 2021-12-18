@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twapi.Database.SQLite;
 
 namespace Twapi
 {
@@ -25,10 +26,10 @@ namespace Twapi
         public static void ExecuteCommand(string[] args)
         {
             // キーファイルの存在確認
-            if (File.Exists(@"Config\Keys"))
+            if (File.Exists(ConfigManager.Keys))
             {
                 // キーの読み込み
-                TwitterAPI.TwitterKeys = XMLUtil.Deserialize<TwitterKeys>(@"Config\Keys");
+                TwitterAPI.TwitterKeys = XMLUtil.Deserialize<TwitterKeys>(ConfigManager.Keys);
             }
 
             // 引数のセット
@@ -44,6 +45,17 @@ namespace Twapi
             {
                 Console.WriteLine("不正なコマンドです。\r\n");
                 action = "/?";
+            }
+
+            // SQLiteファイルが指定されている場合
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.Sql))
+            {
+                SQLiteDataContext.db_file_path = TwitterArgs.CommandOptions.Sql;
+            }
+            else
+            {
+                string path = Path.Combine(ConfigManager.ConfigDir, "twapi.db");
+                SQLiteDataContext.db_file_path = path;
             }
 
             foreach (var tmp in TwitterActions.Actions)
