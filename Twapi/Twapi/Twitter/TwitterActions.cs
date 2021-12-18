@@ -25,7 +25,8 @@ namespace Twapi.Twitter
             new TwitterAction("friends/list", FriendshipsDestroy),
             new TwitterAction("followers/list", FriendshipsDestroy),
             new TwitterAction("twapi/update", TwapiUpdate),
-            new TwitterAction("twapi/create", TwapiCreate)
+            new TwitterAction("twapi/create", TwapiCreate),
+            new TwitterAction("twapi/follow", TwapiFollow)
 
         };
 
@@ -792,6 +793,9 @@ namespace Twapi.Twitter
         }
         #endregion
 
+
+
+
         #region フォロバリストの作成処理
         /// <summary>
         /// フォロバリストの作成処理
@@ -816,6 +820,93 @@ namespace Twapi.Twitter
         }
         #endregion
 
+        #region フォロー処理
+        /// <summary>
+        /// フォロー処理
+        /// </summary>
+        private static void TwapiFollow()
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+
+                    double ff_min = 0.0, ff_max = 0.0;
+                    if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.FFmin))
+                    {
+                        double.TryParse(TwitterArgs.CommandOptions.FFmin, out ff_min);
+                    }
+
+                    if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.FFmax))
+                    {
+                        double.TryParse(TwitterArgs.CommandOptions.FFmax, out ff_max);
+                    }
+
+                    // フォローしていない人を抽出
+                    var tmp = (from follow_list in db.DbSet_FollowList
+                               join my_friends in db.DbSet_FrinedsLog
+                               on follow_list.UserId equals my_friends.UserId into groupping
+                               from my_friends in groupping.DefaultIfEmpty()
+                               where my_friends == null      // 未だフォローしていない
+                               && !follow_list.IsProtected   // プライベートアカウントでない
+                               && !(follow_list.IsSuspended.HasValue && follow_list.IsSuspended.Value)   // ロックされていない
+                               select new
+                               {
+                                   follow_list.UserId,
+                                   follow_list.ScreenName,
+                                   ff_ratio = follow_list.FollowersCount == 0 ? 0 : follow_list.FriendsCount / (double)follow_list.FollowersCount
+                               }).Where(x => (ff_min == 0.0 || x.ff_ratio >= ff_min) && (ff_max == 0.0 || x.ff_ratio <= ff_max)).ToList();
+
+                    // フォロー対象が見つかった
+                    if (tmp.Any())
+                    {
+                        int index = _Rand.Next(0, tmp.Count());
+                        var user = tmp.ToList().ElementAt(index);
+
+                        FrinedsLogBase.Insert(db, new FrinedsLogBase()
+                        {
+                            UserId = user.UserId,
+                            FollowAt = DateTime.Now,
+                            RemoveAt = null
+                        }
+                        );
+
+                        TwitterAPI.Token.Friendships.Create(user.UserId);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region フォロー処理
+        /// <summary>
+        /// フォロー処理
+        /// </summary>
+        /// <param name="action">アクション名</param>
+        public static void TwapiFollow(string action)
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+                }
+
+                // フォローバックリストの更新
+                TwapiFollow();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
         #endregion
     }
 }

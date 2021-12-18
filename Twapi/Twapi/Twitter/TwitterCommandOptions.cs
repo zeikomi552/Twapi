@@ -72,5 +72,11 @@ namespace Twapi.Twitter
         public string Keywords { get; set; }
         [EndpointParam("-sql")]
         public string Sql { get; set; }
+
+        [EndpointParam("-ffmin")]
+        public string FFmin { get; set; }
+
+        [EndpointParam("-ffmax")]
+        public string FFmax { get; set; }
     }
 }
