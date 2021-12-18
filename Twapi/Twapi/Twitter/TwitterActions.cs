@@ -24,7 +24,9 @@ namespace Twapi.Twitter
             new TwitterAction("friendships/destroy", FriendshipsDestroy),
             new TwitterAction("friends/list", FriendshipsDestroy),
             new TwitterAction("followers/list", FriendshipsDestroy),
-            new TwitterAction("followbacklist/create", FollowbacklistCreate)
+            new TwitterAction("twapi/update", TwapiUpdate),
+            new TwitterAction("twapi/create", TwapiCreate)
+
         };
 
 
@@ -612,24 +614,14 @@ namespace Twapi.Twitter
         }
         #endregion
 
-
         #region フォロバリストの自分のフォロワーとフォロー情報を更新する
         /// <summary>
         /// フォロバリストの自分のフォロワーとフォロー情報を更新する
         /// </summary>
-        private static void UpdateFollowBackList()
+        private static void TwapiUpdate()
         {
             try
             {
-                // データベースの存在保証
-                using (var db = new SQLiteDataContext())
-                {
-                    db.Database.EnsureCreated();
-                }
-
-                // 自分のアカウントの情報取得
-                var settings = TwitterAPI.Token.Account.Settings();
-
                 // フォロワーリストの取得
                 RegistFollowerList();
 
@@ -643,7 +635,12 @@ namespace Twapi.Twitter
         }
         #endregion
 
-        public static void FollowbacklistCreate(string action)
+        #region 自分がフォローしているユーザーとフォローされているユーザーを更新する
+        /// <summary>
+        /// 自分がフォローしているユーザーとフォローされているユーザーを更新する
+        /// </summary>
+        /// <param name="action">アクション名</param>
+        public static void TwapiUpdate(string action)
         {
             try
             {
@@ -653,13 +650,178 @@ namespace Twapi.Twitter
                 }
 
                 // フォローバックリストの更新
-                UpdateFollowBackList();
+                TwapiUpdate();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
         }
+        #endregion
+
+        static Random _Rand = new Random();
+
+        #region フォロバリストの作成
+        /// <summary>
+        /// フォロバリストの作成
+        /// </summary>
+        private static void TwapiCreate()
+        {
+            try
+            {
+                string[] keywords = null;
+
+                // キーワードの入力確認
+                if (TwitterArgs.CommandOptions.Keywords != null)
+                {
+                    keywords = TwitterArgs.CommandOptions.Keywords.Split(',');
+                    if (keywords.Length <= 0)
+                    {
+                        Console.WriteLine("-keywordsが指定されていません。ex: -keywords ソフトウェア,プログラマー,プログラミング");
+                        return;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("-keywordsが指定されていません。ex: -keywords ソフトウェア,プログラマー,プログラミング");
+                    return;
+                }
+
+                // フォロー対象リストの取得
+                var db_follow_list = FollowListBase.Select().Where(x => !x.IsExclude).ToList<FollowListBase>();
+
+                long target_id = -1;
+
+                if (db_follow_list.Count > 0)
+                {
+                    var index = _Rand.Next(0, db_follow_list.Count);
+                    target_id = db_follow_list.ElementAt(index).UserId;
+                }
+                else
+                {
+                    // フォロー対象リストの取得
+                    var tmp_user = FrinedsLogBase.Select().ToList<FrinedsLogBase>();
+                    if (tmp_user.Count > 0)
+                    {
+                        var index = _Rand.Next(0, tmp_user.Count);
+                        target_id = tmp_user.ElementAt(index).UserId;
+                    }
+                }
+
+
+                var api_user_list = TwitterAPI.Token.Friends.List(
+                    user_id => target_id,
+                    count => 100);
+
+                Console.WriteLine(api_user_list.RateLimit.Remaining.ToString() + "/" + api_user_list.RateLimit.Limit.ToString());
+                Console.WriteLine(api_user_list.RateLimit.Reset.LocalDateTime);
+
+                using (var db = new SQLiteDataContext())
+                {
+                    try
+                    {
+                        // データベースの存在確認
+                        db.Database.EnsureCreated();
+
+                        // トランザクションをかける
+                        db.Database.BeginTransaction();
+
+                        //// データベース上に登録されているかを確認
+                        var db_friends = FollowListBase.Select();
+
+                        foreach (var api_user in api_user_list)
+                        {
+                            foreach (var key in keywords)
+                            {
+                                if (api_user.Description.Contains(key))
+                                {
+                                    // データベース上に登録されているかを確認
+                                    var db_friend = db_friends.Where(x => x.UserId.Equals(api_user.Id));
+
+                                    // 存在しないならデータの作成
+                                    if (!db_friend.Any())
+                                    {
+                                        FollowListBase.Insert(db, new FollowListBase()
+                                        {
+                                            UserId = api_user.Id.Value,
+                                            CreateAt = api_user.CreatedAt.LocalDateTime,
+                                            Description = api_user.Description,
+                                            FavouritesCount = api_user.FavouritesCount,
+                                            FollowersCount = api_user.FollowersCount,
+                                            FriendsCount = api_user.FriendsCount,
+                                            IsExclude = false,
+                                            LastTweet = api_user.Status == null ? string.Empty : api_user.Status.Text,
+                                            LastTweetAt = api_user.Status == null ? null : api_user.Status.CreatedAt.LocalDateTime,
+                                            ScreenName = api_user.ScreenName,
+                                            Reason = 0,
+                                            TweetCount = api_user.StatusesCount,
+                                            IsProtected = api_user.IsProtected,
+                                            IsSuspended = api_user.IsSuspended
+                                        });
+                                        break;
+                                    }
+                                    // 存在するならアップデート
+                                    else
+                                    {
+                                        var update = new FollowListBase();
+                                        update.Copy(db_friend.First());
+                                        update.Description = api_user.Description;
+                                        update.FavouritesCount = api_user.FavouritesCount;
+                                        update.FollowersCount = api_user.FollowersCount;
+                                        update.FriendsCount = api_user.FriendsCount;
+                                        update.LastTweet = api_user.Status == null ? string.Empty : api_user.Status.Text;
+                                        update.LastTweetAt = api_user.Status == null ? null : api_user.Status.CreatedAt.LocalDateTime;
+                                        update.ScreenName = api_user.ScreenName;
+                                        update.TweetCount = api_user.StatusesCount;
+                                        update.IsSuspended = api_user.IsSuspended;
+                                        update.IsProtected = api_user.IsProtected;
+                                        FollowListBase.Update(db, update, update);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        db.SaveChanges();
+                        db.Database.CommitTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        db.Database.RollbackTransaction();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region フォロバリストの作成処理
+        /// <summary>
+        /// フォロバリストの作成処理
+        /// </summary>
+        /// <param name="action">アクション名</param>
+        public static void TwapiCreate(string action)
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+                }
+
+                // フォローバックリストの更新
+                TwapiCreate();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
         #endregion
     }
 }

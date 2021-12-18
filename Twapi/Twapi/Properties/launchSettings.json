@@ -2,7 +2,7 @@
   "profiles": {
     "Twapi": {
       "commandName": "Project",
-      "commandLineArgs": "followbacklist/create"
+      "commandLineArgs": "twapi/create -keywords プログラマー,プログラミング,ソフトウェア"
     }
   }
 }

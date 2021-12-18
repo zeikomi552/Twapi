@@ -68,5 +68,7 @@ namespace Twapi.Twitter
         public string Exclude_replies { get; set; }
         [EndpointParam("-contributor_details")]
         public string Contributor_details { get; set; }
+        [EndpointParam("-keywords")]
+        public string Keywords { get; set; }
     }
 }

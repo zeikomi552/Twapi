@@ -45,32 +45,6 @@ namespace Twapi.Database.SQLite.Base
 		}
 		#endregion
 
-		#region 作成日時[CreateAt]プロパティ
-		/// <summary>
-		/// 作成日時[CreateAt]プロパティ用変数
-		/// </summary>
-		DateTime _CreateAt = DateTime.MinValue;
-		/// <summary>
-		/// 作成日時[CreateAt]プロパティ
-		/// </summary>
-		[Column("CreateAt")]
-		public DateTime CreateAt
-		{
-			get
-			{
-				return _CreateAt;
-			}
-			set
-			{
-				if (!_CreateAt.Equals(value))
-				{
-					_CreateAt = value;
-					NotifyPropertyChanged("CreateAt");
-				}
-			}
-		}
-		#endregion
-
 		#region 除外フラグ(フォロー済など)[IsExclude]プロパティ
 		/// <summary>
 		/// 除外フラグ(フォロー済など)[IsExclude]プロパティ用変数
@@ -123,6 +97,292 @@ namespace Twapi.Database.SQLite.Base
 		}
 		#endregion
 
+		#region スクリーン名[ScreenName]プロパティ
+		/// <summary>
+		/// スクリーン名[ScreenName]プロパティ用変数
+		/// </summary>
+		String _ScreenName = string.Empty;
+		/// <summary>
+		/// スクリーン名[ScreenName]プロパティ
+		/// </summary>
+		[Column("ScreenName")]
+		public String ScreenName
+		{
+			get
+			{
+				return _ScreenName;
+			}
+			set
+			{
+				if (!_ScreenName.Equals(value))
+				{
+					_ScreenName = value;
+					NotifyPropertyChanged("ScreenName");
+				}
+			}
+		}
+		#endregion
+
+		#region 詳細[Description]プロパティ
+		/// <summary>
+		/// 詳細[Description]プロパティ用変数
+		/// </summary>
+		String _Description = string.Empty;
+		/// <summary>
+		/// 詳細[Description]プロパティ
+		/// </summary>
+		[Column("Description")]
+		public String Description
+		{
+			get
+			{
+				return _Description;
+			}
+			set
+			{
+				if (!_Description.Equals(value))
+				{
+					_Description = value;
+					NotifyPropertyChanged("Description");
+				}
+			}
+		}
+		#endregion
+
+		#region 作成日時[CreateAt]プロパティ
+		/// <summary>
+		/// 作成日時[CreateAt]プロパティ用変数
+		/// </summary>
+		DateTime _CreateAt = DateTime.MinValue;
+		/// <summary>
+		/// 作成日時[CreateAt]プロパティ
+		/// </summary>
+		[Column("CreateAt")]
+		public DateTime CreateAt
+		{
+			get
+			{
+				return _CreateAt;
+			}
+			set
+			{
+				if (!_CreateAt.Equals(value))
+				{
+					_CreateAt = value;
+					NotifyPropertyChanged("CreateAt");
+				}
+			}
+		}
+		#endregion
+
+		#region フォロー数[FriendsCount]プロパティ
+		/// <summary>
+		/// フォロー数[FriendsCount]プロパティ用変数
+		/// </summary>
+		Int32 _FriendsCount = 0;
+		/// <summary>
+		/// フォロー数[FriendsCount]プロパティ
+		/// </summary>
+		[Column("FriendsCount")]
+		public Int32 FriendsCount
+		{
+			get
+			{
+				return _FriendsCount;
+			}
+			set
+			{
+				if (!_FriendsCount.Equals(value))
+				{
+					_FriendsCount = value;
+					NotifyPropertyChanged("FriendsCount");
+				}
+			}
+		}
+		#endregion
+
+		#region フォロワー数[FollowersCount]プロパティ
+		/// <summary>
+		/// フォロワー数[FollowersCount]プロパティ用変数
+		/// </summary>
+		Int32 _FollowersCount = 0;
+		/// <summary>
+		/// フォロワー数[FollowersCount]プロパティ
+		/// </summary>
+		[Column("FollowersCount")]
+		public Int32 FollowersCount
+		{
+			get
+			{
+				return _FollowersCount;
+			}
+			set
+			{
+				if (!_FollowersCount.Equals(value))
+				{
+					_FollowersCount = value;
+					NotifyPropertyChanged("FollowersCount");
+				}
+			}
+		}
+		#endregion
+
+		#region お気に入り数[FavouritesCount]プロパティ
+		/// <summary>
+		/// お気に入り数[FavouritesCount]プロパティ用変数
+		/// </summary>
+		Int32? _FavouritesCount = 0;
+		/// <summary>
+		/// お気に入り数[FavouritesCount]プロパティ
+		/// </summary>
+		[Column("FavouritesCount")]
+		public Int32? FavouritesCount
+		{
+			get
+			{
+				return _FavouritesCount;
+			}
+			set
+			{
+				if (!_FavouritesCount.Equals(value))
+				{
+					_FavouritesCount = value;
+					NotifyPropertyChanged("FavouritesCount");
+				}
+			}
+		}
+		#endregion
+
+		#region ツイート数[TweetCount]プロパティ
+		/// <summary>
+		/// ツイート数[TweetCount]プロパティ用変数
+		/// </summary>
+		Int32? _TweetCount = 0;
+		/// <summary>
+		/// ツイート数[TweetCount]プロパティ
+		/// </summary>
+		[Column("TweetCount")]
+		public Int32? TweetCount
+		{
+			get
+			{
+				return _TweetCount;
+			}
+			set
+			{
+				if (!_TweetCount.Equals(value))
+				{
+					_TweetCount = value;
+					NotifyPropertyChanged("TweetCount");
+				}
+			}
+		}
+		#endregion
+
+		#region 最終ツイート日[LastTweetAt]プロパティ
+		/// <summary>
+		/// 最終ツイート日[LastTweetAt]プロパティ用変数
+		/// </summary>
+		DateTime? _LastTweetAt = null;
+		/// <summary>
+		/// 最終ツイート日[LastTweetAt]プロパティ
+		/// </summary>
+		[Column("LastTweetAt")]
+		public DateTime? LastTweetAt
+		{
+			get
+			{
+				return _LastTweetAt;
+			}
+			set
+			{
+				if (!_LastTweetAt.Equals(value))
+				{
+					_LastTweetAt = value;
+					NotifyPropertyChanged("LastTweetAt");
+				}
+			}
+		}
+		#endregion
+
+		#region 最終ツイート内容[LastTweet]プロパティ
+		/// <summary>
+		/// 最終ツイート内容[LastTweet]プロパティ用変数
+		/// </summary>
+		String _LastTweet = string.Empty;
+		/// <summary>
+		/// 最終ツイート内容[LastTweet]プロパティ
+		/// </summary>
+		[Column("LastTweet")]
+		public String LastTweet
+		{
+			get
+			{
+				return _LastTweet;
+			}
+			set
+			{
+				if (!_LastTweet.Equals(value))
+				{
+					_LastTweet = value;
+					NotifyPropertyChanged("LastTweet");
+				}
+			}
+		}
+		#endregion
+
+		#region プライベートアカウントかどうか[IsProtected]プロパティ
+		/// <summary>
+		/// プライベートアカウントかどうか[IsProtected]プロパティ用変数
+		/// </summary>
+		bool _IsProtected = false;
+		/// <summary>
+		/// プライベートアカウントかどうか[IsProtected]プロパティ
+		/// </summary>
+		[Column("IsProtected")]
+		public bool IsProtected
+		{
+			get
+			{
+				return _IsProtected;
+			}
+			set
+			{
+				if (!_IsProtected.Equals(value))
+				{
+					_IsProtected = value;
+					NotifyPropertyChanged("IsProtected");
+				}
+			}
+		}
+		#endregion
+
+		#region Twitterからロックされているかどうか[IsSuspended]プロパティ
+		/// <summary>
+		/// Twitterからロックされているかどうか[IsSuspended]プロパティ用変数
+		/// </summary>
+		bool? _IsSuspended = false;
+		/// <summary>
+		/// Twitterからロックされているかどうか[IsSuspended]プロパティ
+		/// </summary>
+		[Column("IsSuspended")]
+		public bool? IsSuspended
+		{
+			get
+			{
+				return _IsSuspended;
+			}
+			set
+			{
+				if (!_IsSuspended.Equals(value))
+				{
+					_IsSuspended = value;
+					NotifyPropertyChanged("IsSuspended");
+				}
+			}
+		}
+		#endregion
+
 
 		#endregion
 
@@ -158,11 +418,31 @@ namespace Twapi.Database.SQLite.Base
 		{
 			this.UserId = item.UserId;
 
-			this.CreateAt = item.CreateAt;
-
 			this.IsExclude = item.IsExclude;
 
 			this.Reason = item.Reason;
+
+			this.ScreenName = item.ScreenName;
+
+			this.Description = item.Description;
+
+			this.CreateAt = item.CreateAt;
+
+			this.FriendsCount = item.FriendsCount;
+
+			this.FollowersCount = item.FollowersCount;
+
+			this.FavouritesCount = item.FavouritesCount;
+
+			this.TweetCount = item.TweetCount;
+
+			this.LastTweetAt = item.LastTweetAt;
+
+			this.LastTweet = item.LastTweet;
+
+			this.IsProtected = item.IsProtected;
+
+			this.IsSuspended = item.IsSuspended;
 
 
 		}

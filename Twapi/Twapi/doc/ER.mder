@@ -20,14 +20,6 @@
             <TableParameterM>
               <PrimaryKey>false</PrimaryKey>
               <NotNull>true</NotNull>
-              <Type>DateTime</Type>
-              <Size xsi:nil="true" />
-              <Name>CreateAt</Name>
-              <Description>作成日時</Description>
-            </TableParameterM>
-            <TableParameterM>
-              <PrimaryKey>false</PrimaryKey>
-              <NotNull>true</NotNull>
               <Type>bool</Type>
               <Size xsi:nil="true" />
               <Name>IsExclude</Name>
@@ -40,6 +32,94 @@
               <Size xsi:nil="true" />
               <Name>Reason</Name>
               <Description>除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>ScreenName</Name>
+              <Description>スクリーン名</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>Description</Name>
+              <Description>詳細</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateAt</Name>
+              <Description>作成日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendsCount</Name>
+              <Description>フォロー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowersCount</Name>
+              <Description>フォロワー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FavouritesCount</Name>
+              <Description>お気に入り数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>TweetCount</Name>
+              <Description>ツイート数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>LastTweetAt</Name>
+              <Description>最終ツイート日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>LastTweet</Name>
+              <Description>最終ツイート内容</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsProtected</Name>
+              <Description>プライベートアカウントかどうか</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsSuspended</Name>
+              <Description>Twitterからロックされているかどうか</Description>
             </TableParameterM>
           </Items>
         </ParameterItems>
