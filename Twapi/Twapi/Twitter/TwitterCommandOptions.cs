@@ -78,5 +78,9 @@ namespace Twapi.Twitter
 
         [EndpointParam("-ffmax")]
         public string FFmax { get; set; }
+
+        [EndpointParam("-lastday")]
+        public string LastDay { get; set; }
+
     }
 }

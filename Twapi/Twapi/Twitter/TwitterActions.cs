@@ -833,15 +833,25 @@ namespace Twapi.Twitter
                     db.Database.EnsureCreated();
 
                     double ff_min = 0.0, ff_max = 0.0;
+                    int last_day = 0;
+                    // 範囲指定(min)
                     if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.FFmin))
                     {
                         double.TryParse(TwitterArgs.CommandOptions.FFmin, out ff_min);
                     }
 
+                    // 範囲指定(max)
                     if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.FFmax))
                     {
                         double.TryParse(TwitterArgs.CommandOptions.FFmax, out ff_max);
                     }
+
+                    // 最終ツイート日指定
+                    if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.LastDay))
+                    {
+                        int.TryParse(TwitterArgs.CommandOptions.LastDay, out last_day);
+                    }
+
 
                     // フォローしていない人を抽出
                     var tmp = (from follow_list in db.DbSet_FollowList
@@ -855,8 +865,10 @@ namespace Twapi.Twitter
                                {
                                    follow_list.UserId,
                                    follow_list.ScreenName,
+                                   follow_list.LastTweetAt,
                                    ff_ratio = follow_list.FollowersCount == 0 ? 0 : follow_list.FriendsCount / (double)follow_list.FollowersCount
-                               }).Where(x => (ff_min == 0.0 || x.ff_ratio >= ff_min) && (ff_max == 0.0 || x.ff_ratio <= ff_max)).ToList();
+                               }).Where(x => (ff_min == 0.0 || x.ff_ratio >= ff_min) && (ff_max == 0.0 || x.ff_ratio <= ff_max)
+                               && (last_day == 0 || (x.LastTweetAt.HasValue && DateTime.Now.AddDays(-last_day).CompareTo(x.LastTweetAt.Value) <= 0))).ToList();
 
                     // フォロー対象が見つかった
                     if (tmp.Any())
