@@ -2,7 +2,7 @@
   "profiles": {
     "Twapi": {
       "commandName": "Project",
-      "commandLineArgs": "twapi/follow -sql \"C:\\test\\twapi.sql\" -ffmin 0.98 -ffmax 1.02"
+      "commandLineArgs": "twapi/update -sql \"C:\\test\\twapi.sql\""
     }
   }
 }
