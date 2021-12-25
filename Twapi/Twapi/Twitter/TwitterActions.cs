@@ -455,7 +455,7 @@ namespace Twapi.Twitter
                                 update.Copy(db_friend);
 
                                 // 解除したことを確認した時刻をセット
-                                update.RemoveAt = DateTime.Now;
+                                update.RemoveAt = update.RemoveAt.HasValue ? update.RemoveAt : DateTime.Now;
 
                                 // データの更新
                                 FrinedsLogBase.Update(db, update, update);
@@ -569,7 +569,7 @@ namespace Twapi.Twitter
                                 update.Copy(db_friend);
 
                                 // 解除したことを確認した時刻をセット
-                                update.RemoveAt = DateTime.Now;
+                                update.RemoveAt = update.RemoveAt.HasValue ? update.RemoveAt : DateTime.Now;
 
                                 // データの更新
                                 FollowersLogBase.Update(db, update, update);
