@@ -2,7 +2,7 @@
   "profiles": {
     "Twapi": {
       "commandName": "Project",
-      "commandLineArgs": "twapi/update -sql \"C:\\test\\twapi.sql\""
+      "commandLineArgs": "twapi/remove -lastday 30 -sql \"C:\\test\\twapi.sql\""
     }
   }
 }

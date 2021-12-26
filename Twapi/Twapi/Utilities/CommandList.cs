@@ -188,9 +188,7 @@ namespace Twapi.Utilities
             this.Items.Add(new Command("twapi/update", "自分がフォローしているユーザーとフォローされているユーザーのリストを更新する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("twapi/create", "フォロバリストを作成する", Command.CommandTypeEnum.Action));
             this.Items.Add(new Command("twapi/follow", "フォロバリストを元にフォローする", Command.CommandTypeEnum.Action));
-
-
-
+            this.Items.Add(new Command("twapi/remove", "フォローを解除する", Command.CommandTypeEnum.Action));
             #endregion
             #endregion
 

@@ -28,7 +28,8 @@ namespace Twapi.Twitter
             new TwitterAction("twapi/update", TwapiUpdate),
             new TwitterAction("twapi/create", TwapiCreate),
             new TwitterAction("twapi/follow", TwapiFollow),
-            new TwitterAction("twapi/updateuser", TwapiUpdate)
+            new TwitterAction("twapi/updateuser", TwapiUpdate),
+            new TwitterAction("twapi/remove", TwapiRemove)
         };
 
 
@@ -1037,6 +1038,107 @@ namespace Twapi.Twitter
 
                 // フォローバックリストの更新
                 TwapiFollow();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region フォロー解除処理
+        /// <summary>
+        /// フォロー解除処理
+        /// </summary>
+        public static void TwapiRemove()
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+
+                    int last_day = 0;
+
+                    // 最終ツイート日指定
+                    if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.LastDay))
+                    {
+                        int.TryParse(TwitterArgs.CommandOptions.LastDay, out last_day);
+                    }
+
+                    // フォローしていない人を抽出
+                    var tmp = (from my_friends in db.DbSet_FrinedsLog
+                               join my_follower in db.DbSet_FollowersLog
+                               on my_friends.UserId equals my_follower.UserId into groupping
+                               from my_followers in groupping.DefaultIfEmpty()
+                               where my_followers == null       // フォローされていない
+                               && !my_friends.RemoveAt.HasValue     // フォローの解除をしていない
+                               select new
+                               {
+                                   my_friends.UserId,
+                                   my_friends.FollowAt
+                               }).ToList();
+
+                    var tmp2 = (from x in tmp
+                                join my_followerlist in db.DbSet_FollowList
+                                on x.UserId equals my_followerlist.UserId into grouping
+                                from myfollowerlist in grouping.DefaultIfEmpty()
+                                where (!myfollowerlist.LastTweetAt.HasValue || DateTime.Now.AddDays(-last_day).CompareTo(myfollowerlist.LastTweetAt.Value) >= 0) 
+                                && !myfollowerlist.IsExclude
+                                select new
+                                {
+                                    x.UserId,
+                                    x.FollowAt
+                                }).ToList();
+
+                    // フォロー解除対象が見つかった
+                    if (tmp2.Any())
+                    {
+                        int index = _Rand.Next(0, tmp2.Count());
+                        var user = tmp2.ToList().ElementAt(index);
+
+                        FrinedsLogBase.Update(db, new FrinedsLogBase()
+                        {
+                            UserId = user.UserId,
+                            FollowAt = user.FollowAt,
+                            RemoveAt = null
+                        }
+                        , new FrinedsLogBase()
+                        {
+                            UserId = user.UserId,
+                            FollowAt = user.FollowAt,
+                            RemoveAt = DateTime.Now
+                        }
+                        );
+
+                        TwitterAPI.Token.Friendships.Destroy(user.UserId);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region フォロー解除処理
+        /// <summary>
+        /// フォロー解除処理
+        /// </summary>
+        /// <param name="action">アクション名</param>
+        public static void TwapiRemove(string action)
+        {
+            try
+            {
+                using (var db = new SQLiteDataContext())
+                {
+                    db.Database.EnsureCreated();
+                }
+
+                // フォローバックリストの更新
+                TwapiRemove();
             }
             catch (Exception e)
             {
