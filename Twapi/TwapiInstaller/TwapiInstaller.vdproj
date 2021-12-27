@@ -140,15 +140,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Twapi"
-        "ProductCode" = "8:{FEFE5F18-B950-4705-B295-6171649CE581}"
-        "PackageCode" = "8:{9EA6B4AE-B956-474F-B360-45BF6ED60D39}"
+        "ProductCode" = "8:{CDE23EAD-DEB0-4E1B-A758-33C8CBA543B9}"
+        "PackageCode" = "8:{C64426FA-361C-4564-8249-E1C557114F9A}"
         "UpgradeCode" = "8:{B8553658-73A0-4DD5-BB45-03312D051CC4}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:0.9.0"
         "Manufacturer" = "8:Zeikomi"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -662,7 +662,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DD840426F32B47D7A49141F3F67EA818"
             {
-            "SourcePath" = "8:..\\Twapi\\obj\\Debug\\net5.0\\apphost.exe"
+            "SourcePath" = "8:..\\Twapi\\obj\\Release\\net5.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5810D25348474AB4B7A2CC3C93B5F724"
