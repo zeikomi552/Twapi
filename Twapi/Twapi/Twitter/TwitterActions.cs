@@ -1137,7 +1137,7 @@ namespace Twapi.Twitter
                     db.Database.EnsureCreated();
                 }
 
-                // フォローバックリストの更新
+                // フォロー解除処理の実行
                 TwapiRemove();
             }
             catch (Exception e)
