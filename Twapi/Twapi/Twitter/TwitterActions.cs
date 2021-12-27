@@ -180,6 +180,7 @@ namespace Twapi.Twitter
             {
                 XMLUtil.Seialize<TwitterKeys>(ConfigManager.Keys, TwitterAPI.TwitterKeys);
                 Console.WriteLine("各種キー(コンシューマーキー・コンシューマーシークレット・アクセストークン・アクセスシークレット)を保存しました");
+                Console.WriteLine("==>" + ConfigManager.Keys);
             }
             catch (Exception e)
             {
