@@ -20,24 +20,33 @@ namespace Twapi.Twitter
     }
     public class TwitterArgs
     {
+        #region 引数リスト
         /// <summary>
         /// 引数リスト
         /// </summary>
         public static Dictionary<string, string> Args { get; set; } = new Dictionary<string, string>();
+        #endregion
 
+        #region コマンドリスト
         /// <summary>
         /// コマンドリスト
         /// </summary>
         public static CommandList Commands { get; set; } = new CommandList();
+        #endregion
 
-
-        public static TwitterCommandOptions CommandOptions { get; set; } = new TwitterCommandOptions();
-
+        #region コマンドオプション
         /// <summary>
-        /// コマンドのパラメータを設定する
+        /// コマンドオプション
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        public static TwitterCommandOptions CommandOptions { get; set; } = new TwitterCommandOptions();
+        #endregion
+
+        #region コマンドライン引数を分解して値を設定する
+        /// <summary>
+        /// コマンドライン引数を分解して値を設定する
+        /// </summary>
+        /// <param name="key">コマンド</param>
+        /// <param name="value">セットする値</param>
         public static void SetCommandParameter(string key, string value)
         {
             // Get instance of the attribute.
@@ -65,7 +74,9 @@ namespace Twapi.Twitter
                 }
             }
         }
+        #endregion
 
+        #region コマンドを分解してセットする
         /// <summary>
         /// コマンドを分解してセットする
         /// </summary>
@@ -144,8 +155,8 @@ namespace Twapi.Twitter
                 SetCommandParameter(param.Key, param.Value);
 
             }
-
         }
+        #endregion
 
     }
 }

@@ -13,6 +13,7 @@ namespace Twapi
 {
     class Program
     {
+        #region TwitterAPI メイン関数
         /// <summary>
         /// TwitterAPI
         /// 参考：https://syncer.jp/Web/API/Twitter/REST_API/
@@ -30,5 +31,6 @@ namespace Twapi
             }
 
         }
+        #endregion
     }
 }

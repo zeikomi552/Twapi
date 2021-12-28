@@ -8,6 +8,7 @@ namespace Twapi.Twitter
 {
     public class TwitterAction
     {
+        #region コンストラクタ
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -18,16 +19,20 @@ namespace Twapi.Twitter
             this.ActionName = action_name;
             this.Action = action;
         }
+        #endregion
 
+        #region アクション名
         /// <summary>
         /// アクション名
         /// </summary>
         public string ActionName { get; set; }
+        #endregion
 
+        #region 関数登録
         /// <summary>
         /// 関数登録
         /// </summary>
         public Action<string> Action { get; set; }
-
+        #endregion
     }
 }

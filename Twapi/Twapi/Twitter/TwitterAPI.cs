@@ -207,6 +207,7 @@ namespace Twapi.Twitter
         }
         #endregion
 
+        #region フォローの実行と解除を行う関数
         /// <summary>
         /// フォローの実行と解除を行う関数
         /// </summary>
@@ -252,7 +253,7 @@ namespace Twapi.Twitter
 
             return null;
         }
-
+        #endregion
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
