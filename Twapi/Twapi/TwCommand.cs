@@ -12,13 +12,28 @@ namespace Twapi
 {
     public class TwCommand
     {
+        #region Action
+        /// <summary>
+        /// Action
+        /// </summary>
         static string _Action = string.Empty;
+        #endregion
 
+        #region SQLiteのファイルパス
+        /// <summary>
+        /// SQLiteのファイルパス
+        /// </summary>
         public static string SQLitePath { get; set; }
+        #endregion
 
+        #region コマンドライン引数
+        /// <summary>
+        /// コマンドライン引数
+        /// </summary>
         public static TwitterArgs TwitterArgs { get; set; }
+        #endregion
 
-
+        #region コマンドの実行
         /// <summary>
         /// コマンドの実行
         /// </summary>
@@ -67,8 +82,6 @@ namespace Twapi
             }
 
         }
-
-
-
+        #endregion
     }
 }

@@ -12,11 +12,19 @@ namespace Twapi.Twitter
 {
     public class TwitterActions
     {
+        #region 乱数発生用
+        /// <summary>
+        /// 乱数発生用
+        /// </summary>
         static Random _Rand = new Random();
+        #endregion
 
+        #region アクション一覧
+        /// <summary>
+        /// アクション一覧
+        /// </summary>
         public static List<TwitterAction> Actions = new List<TwitterAction>()
         {
-            new TwitterAction("/test", Test),
             new TwitterAction("/?", Help),
             new TwitterAction("/h", Help),
             new TwitterAction("regist", Regist),
@@ -31,7 +39,7 @@ namespace Twapi.Twitter
             new TwitterAction("twapi/updateuser", TwapiUpdate),
             new TwitterAction("twapi/remove", TwapiRemove)
         };
-
+        #endregion
 
         #region 出力処理
         #region JSONファイルの出力
@@ -1072,7 +1080,7 @@ namespace Twapi.Twitter
                                join my_follower in db.DbSet_FollowersLog
                                on my_friends.UserId equals my_follower.UserId into groupping
                                from my_followers in groupping.DefaultIfEmpty()
-                               where my_followers == null       // フォローされていない
+                               where (my_followers == null || my_followers.RemoveAt.HasValue)       // フォローされていないまたはフォロー解除された
                                && !my_friends.RemoveAt.HasValue     // フォローの解除をしていない
                                select new
                                {

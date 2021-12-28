@@ -19,6 +19,10 @@ namespace Twapi.Twitter
     {
         public static TwitterKeys TwitterKeys { get; set; } = new TwitterKeys();
 
+        #region トークン
+        /// <summary>
+        /// トークン
+        /// </summary>
         public static Tokens Token
         {
             get
@@ -26,6 +30,7 @@ namespace Twapi.Twitter
                 return TwitterKeys.CreateToken();
             }
         }
+        #endregion
 
         #region RateLimitの取得
         /// <summary>
@@ -73,7 +78,6 @@ namespace Twapi.Twitter
             }
         }
         #endregion
-
 
         #region Tweetの検索処理
         /// <summary>
@@ -153,19 +157,6 @@ namespace Twapi.Twitter
             return result;
         }
         #endregion
-
-        public static void Test(TwitterKeys keys, string screen_name)
-        {
-            // トークンの作成
-            var token = keys.CreateToken();
-
-            // 検索
-            var result = token.Friendships.Show(screen_name=>screen_name);
-
-            // 検索結果
-            //return result;
-        }
-
 
         #region Tweetの検索処理
 
