@@ -12,11 +12,13 @@ namespace Twapi.Twitter
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="action_name"></param>
-        /// <param name="action"></param>
-        public TwitterAction(string action_name, Action<string> action)
+        /// <param name="action_name">アクション名</param>
+        /// <param name="help">ヘルプ</param>
+        /// <param name="action">アクション</param>
+        public TwitterAction(string action_name, string help, Action<string> action)
         {
             this.ActionName = action_name;
+            this.Help = help;
             this.Action = action;
         }
         #endregion
@@ -34,5 +36,13 @@ namespace Twapi.Twitter
         /// </summary>
         public Action<string> Action { get; set; }
         #endregion
+
+        #region Help表示用文字列
+        /// <summary>
+        /// Help表示用文字列
+        /// </summary>
+        public string Help { get; set; }
+        #endregion
+
     }
 }

@@ -28,13 +28,6 @@ namespace Twapi.Twitter
         public static Dictionary<string, string> Args { get; set; } = new Dictionary<string, string>();
         #endregion
 
-        #region コマンドリスト
-        /// <summary>
-        /// コマンドリスト
-        /// </summary>
-        public static CommandList Commands { get; set; } = new CommandList();
-        #endregion
-
         #region コマンドオプション
         /// <summary>
         /// コマンドオプション
@@ -87,32 +80,18 @@ namespace Twapi.Twitter
             // 引数分ループする
             for (int i = 0; i < args.Length; i++)
             {
-                var check = (from x in Commands.Items
-                             where x.Key.Equals(args[i].ToLower())
+                var check = (from x in TwitterActions.Actions
+                             where x.ActionName.Equals(args[i].ToLower())
                              select x).FirstOrDefault();
 
                 // nullチェック
                 if (check != null)
                 {
-                    // Action系のコマンドかどうかを確認する
-                    if (check.CommandType == Utilities.Command.CommandTypeEnum.Action)
+                    // アクションキーが既に登録されていないことを確認する
+                    if (!Args.ContainsKey("action"))
                     {
-                        // アクションキーが既に登録されていないことを確認する
-                        if (!Args.ContainsKey("action"))
-                        {
-                            // キーの登録
-                            Args.Add("action", args.Length > i ? args[i] : string.Empty);
-                        }
-                    }
-                    else
-                    {
-                        // 同じキーが既に登録されていないことを確認する
-                        if(!Args.ContainsKey(args[i]))
-                        {
-                            i++;
-                            // アクションキー以外のオプション引数をセットしていく
-                            Args.Add(check.Key.ToLower(), args.Length > i ? args[i] : string.Empty);
-                        }
+                        // キーの登録
+                        Args.Add("action", args.Length > i ? args[i] : string.Empty);
                     }
                 }
                 else

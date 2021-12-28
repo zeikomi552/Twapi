@@ -25,13 +25,13 @@ namespace Twapi.Twitter
         /// </summary>
         public static List<TwitterAction> Actions = new List<TwitterAction>()
         {
-            new TwitterAction("/?", Help),
-            new TwitterAction("/h", Help),
-            new TwitterAction("/regist", Regist),
-            new TwitterAction("/refresh", TwapiUpdate),
-            new TwitterAction("/create", TwapiCreate),
-            new TwitterAction("/follow", TwapiFollow),
-            new TwitterAction("/remove", TwapiRemove)
+            new TwitterAction("/?", "ヘルプを表示します", Help),
+            new TwitterAction("/h", "ヘルプを表示します", Help),
+            new TwitterAction("/regist", "各種キーの保存処理", Regist),
+            new TwitterAction("/refresh", "フォローリスト・フォロワーリスト・フォロバ候補リストの更新します", TwapiUpdate),
+            new TwitterAction("/create", "フォロバ候補を探します", TwapiCreate),
+            new TwitterAction("/follow", "フォローを実行します", TwapiFollow),
+            new TwitterAction("/remove", "フォローを解除します", TwapiRemove)
         };
         #endregion
 
@@ -725,12 +725,10 @@ namespace Twapi.Twitter
                 Console.WriteLine("");
                 Console.WriteLine("actioncommand :");
 
-                foreach (var tmp in TwitterArgs.Commands.Items)
+                foreach (var tmp in TwitterActions.Actions)
                 {
-                    if (!tmp.IsEnable)
-                        continue;
 
-                    Console.WriteLine($"\t{tmp.Key}\t...{tmp.Description}");
+                    Console.WriteLine($"\t{tmp.ActionName}\t...{tmp.Help}");
                 }
             }
             catch (Exception e)
