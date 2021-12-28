@@ -25,13 +25,33 @@ namespace Twapi.Twitter
         /// </summary>
         public static List<TwitterAction> Actions = new List<TwitterAction>()
         {
-            new TwitterAction("/?", "ヘルプを表示します", Help),
-            new TwitterAction("/h", "ヘルプを表示します", Help),
-            new TwitterAction("/regist", "各種キーの保存処理", Regist),
-            new TwitterAction("/refresh", "フォローリスト・フォロワーリスト・フォロバ候補リストの更新します", TwapiUpdate),
-            new TwitterAction("/create", "フォロバ候補を探します", TwapiCreate),
-            new TwitterAction("/follow", "フォローを実行します", TwapiFollow),
-            new TwitterAction("/remove", "フォローを解除します", TwapiRemove)
+            new TwitterAction("/?", "ヘルプを表示します",
+                Help),
+            new TwitterAction("/h", "ヘルプを表示します",
+                Help),
+            new TwitterAction("/regist", "各種キーの保存処理" + "\r\n"
+                + "\t-ck コンシューマーキー" + "\r\n"
+                + "\t-cs コンシューマーキー" + "\r\n"
+                + "\t-at アクセストークン" + "\r\n"
+                + "\t-as アクセスシークレット" + "\r\n"
+                , Regist),
+            new TwitterAction("/refresh", "フォローリスト・フォロワーリスト・フォロバ候補リストの更新します" + "\r\n"
+                + "\t-sql データ保存先ファイルパス" + "\r\n"
+                , TwapiUpdate),
+            new TwitterAction("/create", "フォロバ候補を探します" + "\r\n"
+                + "\t-keywords 自己紹介文に含まれるキーワード。カンマ区切りでOR指定。ex.プログラマー,プログラミング,ソフトウェア" + "\r\n"
+                + "\t-sql データ保存先ファイルパス" + "\r\n"
+                , TwapiCreate),
+            new TwitterAction("/follow", "フォローを実行します" + "\r\n"
+                + "\t-sql データ保存先ファイルパス" + "\r\n"
+                + "\t-lastday 最終ツイート日からの日数(整数値指定)" + "\r\n"
+                + "\t-ffmin フォロー数/フォロワー数最小値(0～1を指定：0指定時は無制限)" + "\r\n"
+                + "\t-ffmax フォロー数/フォロワー数最大値(0～1を指定：0指定時は無制限)" + "\r\n"
+                , TwapiFollow),
+            new TwitterAction("/remove", "フォローを解除します" + "\r\n"
+                + "\t-lastday 最終ツイート日からの日数(整数値指定)" + "\r\n"
+                + "\t-sql データ保存先ファイルパス" + "\r\n"
+                , TwapiRemove)
         };
         #endregion
 
@@ -720,14 +740,13 @@ namespace Twapi.Twitter
             try
             {
                 Console.WriteLine("使用方法：");
-                Console.WriteLine("\tTwapi [actioncommand] [-keys] [-options]");
+                Console.WriteLine("\ttwapi [actioncommand] [-options]");
 
                 Console.WriteLine("");
                 Console.WriteLine("actioncommand :");
 
                 foreach (var tmp in TwitterActions.Actions)
                 {
-
                     Console.WriteLine($"\t{tmp.ActionName}\t...{tmp.Help}");
                 }
             }
