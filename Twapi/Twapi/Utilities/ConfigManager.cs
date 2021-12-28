@@ -9,6 +9,10 @@ namespace Twapi.Utilities
 {
     class ConfigManager
     {
+        #region Configファイル用フォルダパス
+        /// <summary>
+        /// Configファイル用フォルダパス
+        /// </summary>
         public static string ConfigDir
         {
             get
@@ -18,7 +22,12 @@ namespace Twapi.Utilities
                 return config_dir;
             }
         }
+        #endregion
 
+        #region キーファイルパス
+        /// <summary>
+        /// キーファイルパス
+        /// </summary>
         public static string Keys
         {
             get
@@ -31,5 +40,6 @@ namespace Twapi.Utilities
                 return config_path;
             }
         }
+        #endregion
     }
 }
