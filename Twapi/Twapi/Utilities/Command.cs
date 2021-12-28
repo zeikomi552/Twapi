@@ -29,27 +29,36 @@ namespace Twapi.Utilities
             /// </summary>
             Keys
         }
-    
+
+        #region キー
         /// <summary>
         /// キー
         /// </summary>
         public string Key { get; set; }
+        #endregion
 
+        #region 説明
         /// <summary>
         /// 説明
         /// </summary>
         public string Description { get; set; }
+        #endregion
 
+        #region コマンドタイプ
         /// <summary>
         /// コマンドタイプ
         /// </summary>
         public CommandTypeEnum CommandType { get; set; }
+        #endregion
 
+        #region 有効（実装済）/無効(未実装)
         /// <summary>
         /// 有効（実装済）/無効(未実装)
         /// </summary>
         public bool IsEnable { get; set; }
+        #endregion
 
+        #region コンストラクタ
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -64,5 +73,6 @@ namespace Twapi.Utilities
             this.CommandType = command_type;
             this.IsEnable = is_enable;
         }
+        #endregion
     }
 }
