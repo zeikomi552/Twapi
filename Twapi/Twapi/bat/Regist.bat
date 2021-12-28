@@ -21,7 +21,7 @@ set /P SQLITE_PATH="データの保存先ファイルパスを指定してください。ファイル名を含
 cd %DIR_PATH%
 twapi regist -ck %CONSUMER_KEY% -cs %CONSUMER_SECRET% -at %ACCESS_TOKEN% -as %ACCESS_SECRET%
 
-twapi twapi/update -sql %SQLITE_PATH%
+twapi refresh -sql %SQLITE_PATH%
 
 PAUSE
 EXIT
