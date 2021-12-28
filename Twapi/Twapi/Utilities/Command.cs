@@ -21,10 +21,6 @@ namespace Twapi.Utilities
             /// </summary>
             Option,
             /// <summary>
-            /// パラメータ：ツイッターAPIのエンドポイントに付属するパラメータ
-            /// </summary>
-            Parameter,
-            /// <summary>
             /// キー：アクセスシークレットやトークン等
             /// </summary>
             Keys

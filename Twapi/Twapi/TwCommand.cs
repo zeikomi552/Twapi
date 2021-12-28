@@ -47,6 +47,11 @@ namespace Twapi
                 TwitterAPI.TwitterKeys = XMLUtil.Deserialize<TwitterKeys>(ConfigManager.Keys);
             }
 
+            // SQLiteのデフォルトパス設定
+            string path = Path.Combine(ConfigManager.ConfigDir, "twapi.db");
+            SQLiteDataContext.db_file_path = path;
+
+
             // 引数のセット
             TwitterArgs.SetCommand(args);
 
@@ -62,25 +67,21 @@ namespace Twapi
                 action = "/?";
             }
 
-            // SQLiteファイルが指定されている場合
+            // SQLiteファイルが指定されている場合、指定されたファイルを優先する
             if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.Sql))
             {
                 SQLiteDataContext.db_file_path = TwitterArgs.CommandOptions.Sql;
             }
-            else
-            {
-                string path = Path.Combine(ConfigManager.ConfigDir, "twapi.db");
-                SQLiteDataContext.db_file_path = path;
-            }
 
+            // アクションの実行
             foreach (var tmp in TwitterActions.Actions)
             {
                 if (action.Equals(tmp.ActionName))
                 {
                     tmp.Action(tmp.ActionName);
+                    break;
                 }
             }
-
         }
         #endregion
     }
