@@ -16,7 +16,9 @@ namespace Twapi
         #region TwitterAPI メイン関数
         /// <summary>
         /// TwitterAPI
-        /// 参考：https://syncer.jp/Web/API/Twitter/REST_API/
+        /// 参考：
+        /// https://syncer.jp/Web/API/Twitter/REST_API/
+        /// http://westplain.sakuraweb.com/translate/twitter/Documentation/REST-APIs/Public-API/REST-APIs.cgi
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
