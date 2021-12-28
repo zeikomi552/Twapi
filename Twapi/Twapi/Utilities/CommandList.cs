@@ -35,11 +35,6 @@ namespace Twapi.Utilities
             this.Items.Add(new Command("-as", "TwitterAPIを使用する際に必要となるアクセスシークレットを指定する", Command.CommandTypeEnum.Keys));
 
             #endregion
-
-            #region Options
-            this.Items.Add(new Command("-sql", "保存先のSqLiteファイルを指定します(-dとは併用できません)", Command.CommandTypeEnum.Option));
-            #endregion
-
         }
     }
 }
