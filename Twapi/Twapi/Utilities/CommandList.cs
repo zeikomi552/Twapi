@@ -28,13 +28,6 @@ namespace Twapi.Utilities
             this.Items.Add(new Command("/remove", "フォローを解除する", Command.CommandTypeEnum.Action, true));
             #endregion
 
-            #region Keys
-            this.Items.Add(new Command("-ck", "TwitterAPIを使用する際に必要となるコンシューマーキーを指定する", Command.CommandTypeEnum.Keys));
-            this.Items.Add(new Command("-cs", "TwitterAPIを使用する際に必要となるコンシューマーシークレットを指定する", Command.CommandTypeEnum.Keys));
-            this.Items.Add(new Command("-at", "TwitterAPIを使用する際に必要となるアクセストークンを指定する", Command.CommandTypeEnum.Keys));
-            this.Items.Add(new Command("-as", "TwitterAPIを使用する際に必要となるアクセスシークレットを指定する", Command.CommandTypeEnum.Keys));
-
-            #endregion
         }
     }
 }

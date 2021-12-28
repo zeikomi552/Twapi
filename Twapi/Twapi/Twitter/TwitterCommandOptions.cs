@@ -38,5 +38,29 @@ namespace Twapi.Twitter
         [EndpointParam("-lastday")]
         public string LastDay { get; set; }
 
+        /// <summary>
+        /// コンシューマーキー
+        /// </summary>
+        [EndpointParam("-ck")]
+        public string ConsumerKey { get; set; }
+
+        /// <summary>
+        /// コンシューマーシークレット
+        /// </summary>
+        [EndpointParam("-cs")]
+        public string ConsumerSecret { get; set; }
+
+        /// <summary>
+        /// アクセストークン
+        /// </summary>
+        [EndpointParam("-at")]
+        public string AccessToken { get; set; }
+
+        /// <summary>
+        /// アクセスシークレット
+        /// </summary>
+        [EndpointParam("-as")]
+        public string AccessSecret { get; set; }
+
     }
 }

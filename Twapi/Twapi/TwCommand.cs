@@ -67,12 +67,6 @@ namespace Twapi
                 action = "/?";
             }
 
-            // SQLiteファイルが指定されている場合、指定されたファイルを優先する
-            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.Sql))
-            {
-                SQLiteDataContext.db_file_path = TwitterArgs.CommandOptions.Sql;
-            }
-
             // アクションの実行
             foreach (var tmp in TwitterActions.Actions)
             {

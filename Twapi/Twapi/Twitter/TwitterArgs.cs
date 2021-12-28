@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Twapi.Database.SQLite;
 
 namespace Twapi.Twitter
 {
@@ -96,48 +97,22 @@ namespace Twapi.Twitter
                     // Action系のコマンドかどうかを確認する
                     if (check.CommandType == Utilities.Command.CommandTypeEnum.Action)
                     {
-                        // アクションキーが存在しないことを確認する
+                        // アクションキーが既に登録されていないことを確認する
                         if (!Args.ContainsKey("action"))
                         {
                             // キーの登録
                             Args.Add("action", args.Length > i ? args[i] : string.Empty);
                         }
                     }
-                    // コンシューマーキーなどのキー系かどうかを確認する
-                    else if (check.CommandType == Utilities.Command.CommandTypeEnum.Keys)
-                    {
-                        switch (args[i].ToLower())
-                        {
-                            case "-ck": // コンシューマーキー
-                                {
-                                    i++;
-                                    TwitterAPI.TwitterKeys.ConsumerKey = args.Length > i ? args[i] : string.Empty;
-                                    break;
-                                }
-                            case "-cs": // コンシューマーシークレット
-                                {
-                                    i++;
-                                    TwitterAPI.TwitterKeys.ConsumerSecretKey = args.Length > i ? args[i] : string.Empty;
-                                    break;
-                                }
-                            case "-at": // アクセストークン
-                                {
-                                    i++;
-                                    TwitterAPI.TwitterKeys.AccessToken = args.Length > i ? args[i] : string.Empty;
-                                    break;
-                                }
-                            case "-as": // アクセスシークレット
-                                {
-                                    i++;
-                                    TwitterAPI.TwitterKeys.AccessSecret = args.Length > i ? args[i] : string.Empty;
-                                    break;
-                                }
-                        }
-                    }
                     else
                     {
-                        i++;
-                        Args.Add(check.Key.ToLower(), args.Length > i ? args[i] : string.Empty);
+                        // 同じキーが既に登録されていないことを確認する
+                        if(!Args.ContainsKey(args[i]))
+                        {
+                            i++;
+                            // アクションキー以外のオプション引数をセットしていく
+                            Args.Add(check.Key.ToLower(), args.Length > i ? args[i] : string.Empty);
+                        }
                     }
                 }
                 else
@@ -145,16 +120,51 @@ namespace Twapi.Twitter
                     string key = args[i++];
                     string value = args.Length > i ? args[i] : string.Empty;
 
-                    Args.Add(key, value);
+                    // 同じキーが既に登録されていないことを確認する
+                    if (!Args.ContainsKey(key))
+                    {
+                        Args.Add(key, value);
+                    }
                 }
             }
 
+            // コマンド + オプションリストにセットする
             foreach (var param in TwitterArgs.Args)
             {
                 // エンドポイントコマンドに使用するパラメータのセット
                 SetCommandParameter(param.Key, param.Value);
-
             }
+
+            #region SQLiteファイルパス設定
+            // SQLiteファイルが指定されている場合、指定されたファイルを優先する
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.Sql))
+            {
+                SQLiteDataContext.db_file_path = TwitterArgs.CommandOptions.Sql;
+            }
+            #endregion
+
+            #region 各種キー設定
+            // コンシューマーキーが指定されている場合
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.ConsumerKey))
+            {
+                TwitterAPI.TwitterKeys.ConsumerKey = TwitterArgs.CommandOptions.ConsumerKey;
+            }
+            // コンシューマーシークレットキーが指定されている場合
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.ConsumerSecret))
+            {
+                TwitterAPI.TwitterKeys.ConsumerSecretKey = TwitterArgs.CommandOptions.ConsumerSecret;
+            }
+            // アクセストークンが指定されている場合
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.AccessToken))
+            {
+                TwitterAPI.TwitterKeys.AccessToken = TwitterArgs.CommandOptions.AccessToken;
+            }
+            // アクセスシークレットが指定されている場合
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.AccessSecret))
+            {
+                TwitterAPI.TwitterKeys.AccessSecret = TwitterArgs.CommandOptions.AccessSecret;
+            }
+            #endregion
         }
         #endregion
 

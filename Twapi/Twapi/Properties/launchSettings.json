@@ -2,7 +2,7 @@
   "profiles": {
     "Twapi": {
       "commandName": "Project",
-      "commandLineArgs": "/refresh -sql \"C:\\test\\twapi.sql\""
+      "commandLineArgs": "/refresh -sql \"C:\\test\\twapi.sql\" -sql \"C:\\test\\twapi.sql\""
     }
   }
 }
