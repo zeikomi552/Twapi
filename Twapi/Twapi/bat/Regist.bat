@@ -19,9 +19,9 @@ set SQLITE_PATH=
 set /P SQLITE_PATH="データの保存先ファイルパスを指定してください。ファイル名を含む。:"
 
 cd %DIR_PATH%
-twapi regist -ck %CONSUMER_KEY% -cs %CONSUMER_SECRET% -at %ACCESS_TOKEN% -as %ACCESS_SECRET%
+twapi /regist -ck %CONSUMER_KEY% -cs %CONSUMER_SECRET% -at %ACCESS_TOKEN% -as %ACCESS_SECRET%
 
-twapi refresh -sql %SQLITE_PATH%
+twapi /refresh -sql %SQLITE_PATH%
 
 PAUSE
 EXIT

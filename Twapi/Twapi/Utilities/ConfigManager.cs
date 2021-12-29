@@ -19,6 +19,7 @@ namespace Twapi.Utilities
             {
                 string path = PathManager.GetApplicationFolder();
                 string config_dir = Path.Combine(path, "Config");
+                PathManager.CreateDirectory(config_dir);
                 return config_dir;
             }
         }
@@ -32,10 +33,8 @@ namespace Twapi.Utilities
         {
             get
             {
-                string path = PathManager.GetApplicationFolder();
-                string config_dir = Path.Combine(path, "Config");
-                PathManager.CreateDirectory(config_dir);
-                string config_path = Path.Combine(path, "Keys");
+                string config_dir = ConfigDir;
+                string config_path = Path.Combine(config_dir, "Keys");
 
                 return config_path;
             }
