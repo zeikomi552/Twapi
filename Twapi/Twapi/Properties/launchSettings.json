@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Twapi": {
-      "commandName": "Project",
-      "commandLineArgs": "/autotweet -xlsx \"C:\\Users\\gohya\\Desktop\\test.xlsx\""
+      "commandName": "Project"
     }
   }
 }
