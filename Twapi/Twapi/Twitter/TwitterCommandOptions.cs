@@ -39,6 +39,12 @@ namespace Twapi.Twitter
         public string LastDay { get; set; }
 
         /// <summary>
+        /// エクセルファイルパス
+        /// </summary>
+        [EndpointParam("-xlsx")]
+        public string ExcelPath { get; set; }
+
+        /// <summary>
         /// コンシューマーキー
         /// </summary>
         [EndpointParam("-ck")]

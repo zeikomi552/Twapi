@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Twapi.Database.SQLite.Base;
 using Twapi.Database.SQLite;
+using ClosedXML.Excel;
 
 namespace Twapi.Twitter
 {
@@ -51,7 +52,10 @@ namespace Twapi.Twitter
             new TwitterAction("/remove", "フォローを解除します" + "\r\n"
                 + "\t-lastday 最終ツイート日からの日数(整数値指定)" + "\r\n"
                 + "\t-sql データ保存先ファイルパス" + "\r\n"
-                , TwapiRemove)
+                , TwapiRemove),
+            new TwitterAction("/autotweet", "Excelの内容をランダムでツイートします" + "\r\n"
+                + "\t-xlsx エクセルファイルパスを指定"
+                , AutoTweet),
         };
         #endregion
 
@@ -727,6 +731,96 @@ namespace Twapi.Twitter
         }
         #endregion
 
+        #region 自動ツイート
+        /// <summary>
+        /// 自動ツイート
+        /// </summary>
+        private static void AutoTweet()
+        {
+            try
+            {
+                string path = TwitterArgs.CommandOptions.ExcelPath;
+
+                // ファイルパスが指定されていない場合
+                if (string.IsNullOrEmpty(path))
+                {
+                    Console.WriteLine("ファイルパスが指定されていません。");
+                    return;
+                }
+
+                // 指定されたファイルパスが存在しない場合
+                if (!File.Exists(path))
+                {
+                    Console.WriteLine("ファイルが存在しません。");
+                    return;
+                }
+
+                // 読み取り専用で開く
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    // Bookの操作
+                    using (XLWorkbook book = new XLWorkbook(fs, XLEventTracking.Disabled))
+                    {
+                        // シートの一番目を取得
+                        var sheet = book.Worksheets.ElementAt(0);
+                        List<KeyValuePair<string, string>> msg_list = new List<KeyValuePair<string, string>>();
+                        int row = 2;    // 先頭行はヘッダとして扱う
+
+                        // ループ
+                        while (true)
+                        {
+                            
+                            string msg = sheet.Cell(row, 1).Value != null ? sheet.Cell(row, 1).Value.ToString() : string.Empty; // メッセージの取得
+                            string url = sheet.Cell(row, 2).Value != null ? sheet.Cell(row, 2).Value.ToString() : string.Empty; // URLの取得
+
+                            // メッセージ部が空ならば抜ける
+                            if (string.IsNullOrEmpty(msg))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                // リストに追加（メッセージとURLをセットで保持）
+                                msg_list.Add(new KeyValuePair<string, string>(msg, url));
+                            }
+                            row++;  // 行をインクリメント
+                        }
+
+                        int max = 280;  // ツイート数最大値
+                        if (msg_list.Count > 0)
+                        {
+                            // ツイート内容の取得（ランダム）
+                            int index = _Rand.Next(0, msg_list.Count);
+                            var lst = msg_list.ElementAt(index);
+                            var msg = lst.Key;      // メッセージの取り出し
+                            var url = lst.Value;    // URLの取り出し
+
+                            if (string.IsNullOrEmpty(url))
+                            {
+                                // バイト数で切り取る
+                                msg = StrUtil.SubstringByte(lst.Key, max);
+                            }
+                            else
+                            {
+                                // URLは23文字扱いのため-23 改行を含むので24文字
+                                msg = StrUtil.SubstringByte(lst.Key, max - 24);
+                                msg = msg + "\r\n" + url;
+                            }
+
+                            // ツイート
+                            TwitterAPI.Token.Statuses.Update(msg);
+                            Console.WriteLine(msg);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
         #endregion
 
         #region Public Method
@@ -872,6 +966,26 @@ namespace Twapi.Twitter
             }
         }
         #endregion
+
+        #region 自動ツイート
+        /// <summary>
+        /// 自動ツイート
+        /// </summary>
+        /// <param name="action">アクション名</param>
+        public static void AutoTweet(string action)
+        {
+            try
+            {
+                // フォロー解除処理の実行
+                AutoTweet();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
         #endregion
         #endregion
     }

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Utilities\Command.cs" />
     <Compile Remove="Utilities\CommandList.cs" />
   </ItemGroup>
 
