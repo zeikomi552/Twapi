@@ -2,7 +2,7 @@
   "profiles": {
     "Twapi": {
       "commandName": "Project",
-      "commandLineArgs": "/?"
+      "commandLineArgs": "/search -keywords プログラマー,プログラミング,ソフトウェア -sql \"C:\\test\\twapi.sql\""
     }
   }
 }

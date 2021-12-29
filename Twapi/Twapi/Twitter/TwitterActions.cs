@@ -38,10 +38,10 @@ namespace Twapi.Twitter
             new TwitterAction("/refresh", "フォローリスト・フォロワーリスト・フォロバ候補リストの更新します" + "\r\n"
                 + "\t-sql データ保存先ファイルパス" + "\r\n"
                 , TwapiUpdate),
-            new TwitterAction("/create", "フォロバ候補を探します" + "\r\n"
+            new TwitterAction("/search", "フォロバ候補を探します" + "\r\n"
                 + "\t-keywords 自己紹介文に含まれるキーワード。カンマ区切りでOR指定。ex.プログラマー,プログラミング,ソフトウェア" + "\r\n"
                 + "\t-sql データ保存先ファイルパス" + "\r\n"
-                , TwapiCreate),
+                , TwapiSearch),
             new TwitterAction("/follow", "フォローを実行します" + "\r\n"
                 + "\t-sql データ保存先ファイルパス" + "\r\n"
                 + "\t-lastday 最終ツイート日からの日数(整数値指定)" + "\r\n"
@@ -441,7 +441,7 @@ namespace Twapi.Twitter
         /// <summary>
         /// フォロバリストの作成
         /// </summary>
-        private static void TwapiCreate()
+        private static void TwapiSearch()
         {
             try
             {
@@ -801,12 +801,12 @@ namespace Twapi.Twitter
         }
         #endregion
 
-        #region フォロバリストの作成処理
+        #region フォロバさん検索
         /// <summary>
-        /// フォロバリストの作成処理
+        /// フォロバさん検索
         /// </summary>
         /// <param name="action">アクション名</param>
-        public static void TwapiCreate(string action)
+        public static void TwapiSearch(string action)
         {
             try
             {
@@ -816,7 +816,7 @@ namespace Twapi.Twitter
                 }
 
                 // フォローバックリストの更新
-                TwapiCreate();
+                TwapiSearch();
             }
             catch (Exception e)
             {
