@@ -45,6 +45,12 @@ namespace Twapi.Twitter
         public string ExcelPath { get; set; }
 
         /// <summary>
+        /// フォローしてからの期間
+        /// </summary>
+        [EndpointParam("-followdays")]
+        public string FollowDays { get; set; }
+
+        /// <summary>
         /// コンシューマーキー
         /// </summary>
         [EndpointParam("-ck")]

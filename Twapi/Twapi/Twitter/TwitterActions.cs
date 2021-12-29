@@ -667,11 +667,17 @@ namespace Twapi.Twitter
                     db.Database.EnsureCreated();
 
                     int last_day = 0;
+                    int followdays = 0;
 
                     // 最終ツイート日指定
                     if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.LastDay))
                     {
                         int.TryParse(TwitterArgs.CommandOptions.LastDay, out last_day);
+                    }
+                    // 最終フォローした日からの期間
+                    if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.FollowDays))
+                    {
+                        int.TryParse(TwitterArgs.CommandOptions.FollowDays, out followdays);
                     }
 
                     // フォローしていない人を抽出
@@ -681,6 +687,7 @@ namespace Twapi.Twitter
                                from my_followers in groupping.DefaultIfEmpty()
                                where (my_followers == null || my_followers.RemoveAt.HasValue)       // フォローされていないまたはフォロー解除された
                                && !my_friends.RemoveAt.HasValue     // フォローの解除をしていない
+                               && (followdays == 0 || DateTime.Now.AddDays(-followdays).CompareTo(my_friends.FollowAt) >= 0)    // フォロー期間を過ぎた
                                select new
                                {
                                    my_friends.UserId,
@@ -691,7 +698,7 @@ namespace Twapi.Twitter
                                 join my_followerlist in db.DbSet_FollowList
                                 on x.UserId equals my_followerlist.UserId into grouping
                                 from myfollowerlist in grouping.DefaultIfEmpty()
-                                where (!myfollowerlist.LastTweetAt.HasValue || DateTime.Now.AddDays(-last_day).CompareTo(myfollowerlist.LastTweetAt.Value) >= 0) 
+                                where (!myfollowerlist.LastTweetAt.HasValue || DateTime.Now.AddDays(-last_day).CompareTo(myfollowerlist.LastTweetAt.Value) >= 0) // 最終ツイート日からの経過時間を過ぎた
                                 && !myfollowerlist.IsExclude
                                 select new
                                 {
