@@ -40,18 +40,6 @@ namespace Twapi
         /// <param name="args">パラメータ</param>
         public static void ExecuteCommand(string[] args)
         {
-            // キーファイルの存在確認
-            if (File.Exists(ConfigManager.Keys))
-            {
-                // キーの読み込み
-                TwitterAPI.TwitterKeys = XMLUtil.Deserialize<TwitterKeys>(ConfigManager.Keys);
-            }
-
-            // SQLiteのデフォルトパス設定
-            string path = Path.Combine(ConfigManager.ConfigDir, "twapi.db");
-            SQLiteDataContext.db_file_path = path;
-
-
             // 引数のセット
             TwitterArgs.SetCommand(args);
 

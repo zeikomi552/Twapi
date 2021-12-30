@@ -29,16 +29,8 @@ namespace Twapi.Utilities
         /// <summary>
         /// キーファイルパス
         /// </summary>
-        public static string Keys
-        {
-            get
-            {
-                string config_dir = ConfigDir;
-                string config_path = Path.Combine(config_dir, "Keys");
-
-                return config_path;
-            }
-        }
+        public static string KeysFile { get; set; } = Path.Combine(ConfigManager.ConfigDir, "twapi.keys");
         #endregion
+
     }
 }

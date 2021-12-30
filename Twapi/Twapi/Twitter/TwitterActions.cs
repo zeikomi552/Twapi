@@ -56,6 +56,8 @@ namespace Twapi.Twitter
             new TwitterAction("/autotweet", "Excelの内容をランダムでツイートします" + "\r\n"
                 + "\t-xlsx エクセルファイルパスを指定"
                 , AutoTweet),
+            //new TwitterAction("/init", "各種キーの初期化設定を行います"
+            //    , Init),
         };
         #endregion
 
@@ -737,7 +739,7 @@ namespace Twapi.Twitter
             }
         }
         #endregion
-
+        
         #region 自動ツイート
         /// <summary>
         /// 自動ツイート
@@ -828,6 +830,188 @@ namespace Twapi.Twitter
         }
         #endregion
 
+        private static string YesNoQuestion(string msg)
+        {
+            string ans = "-";
+
+            // 入力内容を確認 y/yes or n/no出ない場合は再度確認
+            while (!ans.Equals("y") && !ans.Equals("yes") && !ans.Equals("n") && !ans.Equals("no"))
+            {
+                Console.WriteLine(msg);
+                ans = Console.ReadLine();   // 入力待ち
+                ans = string.IsNullOrWhiteSpace(ans) ? string.Empty : ans.Trim().ToLower(); // nullチェックして小文字に変換
+            }
+            return ans;
+        }
+
+
+        //private static void KeysInit()
+        //{
+        //    bool set_f = false;
+        //    string ans = string.Empty;
+
+        //    // キーの存在確認
+        //    if (File.Exists(ConfigManager.Keys))
+        //    {
+        //        ans = YesNoQuestion("既にTwitterAPIで使用する各種キーファイルが存在します。\r\n更新しますか？更新->y 何もしない->n");
+
+        //        if (ans.Equals("n") || ans.Equals("no"))
+        //        {
+        //            return;
+        //        }
+        //    }
+
+        //    while (!set_f)
+        //    {
+        //        Console.WriteLine("TwitterAPIで使用する各種キーを更新します。");
+        //        Console.WriteLine("コンシューマーキーを入力してください。");
+        //        TwitterArgs.CommandOptions.ConsumerKey = Console.ReadLine();
+
+        //        Console.WriteLine("コンシューマーシークレットを入力してください。");
+        //        TwitterArgs.CommandOptions.ConsumerSecret = Console.ReadLine();
+
+        //        Console.WriteLine("アクセストークンを入力してください。");
+        //        TwitterArgs.CommandOptions.AccessToken = Console.ReadLine();
+
+        //        Console.WriteLine("アクセスシークレットを入力してください。");
+        //        TwitterArgs.CommandOptions.AccessSecret = Console.ReadLine();
+
+        //        // 空文字チェック
+        //        if (string.IsNullOrWhiteSpace(TwitterArgs.CommandOptions.ConsumerKey)
+        //            || string.IsNullOrWhiteSpace(TwitterArgs.CommandOptions.ConsumerSecret)
+        //            || string.IsNullOrWhiteSpace(TwitterArgs.CommandOptions.AccessToken)
+        //            || string.IsNullOrWhiteSpace(TwitterArgs.CommandOptions.AccessSecret))
+        //        {
+        //            ans = YesNoQuestion("一部キーが入力されていません。再入力->y 終了->n");
+
+        //            if (ans.Equals("n") || ans.Equals("no"))
+        //            {
+        //                return;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Regist("/regist");
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //private static void InitDatabase()
+        //{
+        //    bool set_f = false;
+        //    string ans = string.Empty;
+
+        //    // SQLiteファイルの存在確認
+        //    if (File.Exists(TwitterArgs.CommandOptions.Sql))
+        //    {
+        //        // 保存先の作成確認
+        //        ans = YesNoQuestion("データの保存先を作成しますか？作成->y 作成しない->n");
+        //    }
+
+        //    if (ans.Equals("n") || ans.Equals("no"))
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        while (!set_f)
+        //        {
+        //            Console.WriteLine(@"");
+        //            Console.WriteLine(@"データの保存先のファイル名を指定してください。（拡張子は任意）ex.C:\output.sqlite");
+        //            TwitterArgs.CommandOptions.Sql = Console.ReadLine();
+
+        //            // 空文字チェック
+        //            if (string.IsNullOrWhiteSpace(TwitterArgs.CommandOptions.Sql))
+        //            {
+        //                // 再入力確認
+        //                ans = YesNoQuestion("保存先のファイル名が指定されていません。再入力->y 終了->n");
+
+        //                if (ans.Equals("n") || ans.Equals("no"))
+        //                {
+        //                    return;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                set_f = true;
+        //            }
+        //        }
+        //    }
+
+        //    if (File.Exists(TwitterArgs.CommandOptions.Sql))
+        //    {
+        //        // 再入力確認
+        //        ans = YesNoQuestion("既にファイルが存在します。初期化しますか？初期化->y 何もしない->n");
+
+        //        if (ans.Equals("yes") || ans.Equals("y"))
+        //        {
+        //            try
+        //            {
+        //                File.Delete(TwitterArgs.CommandOptions.Sql);
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                Console.Write(e.Message);
+        //            }
+        //        }
+        //    }
+
+        //}
+
+        //#region 初期化処理
+        ///// <summary>
+        ///// 初期化処理
+        ///// </summary>
+        //private static void Init()
+        //{
+        //    try
+        //    {
+        //        // APIキーの初期化処理
+        //        KeysInit();
+
+        //        InitDatabase();
+        //        //// ファイルの存在確認
+        //        //if (File.Exists(TwitterArgs.CommandOptions.Sql))
+        //        //{
+        //        //    set_f = false;
+        //        //    while (!set_f)
+        //        //    {
+        //        //        Console.WriteLine("既にファイルが存在します。データを初期化しますか？");
+        //        //        Console.WriteLine(@"初期化する->y 初期化しない->n");
+        //        //        string ans = Console.ReadLine();
+        //        //        ans = string.IsNullOrWhiteSpace(ans) ? string.Empty : ans.Trim().ToLower(); // nullチェックして小文字に変換
+
+        //        //        // 空文字チェック
+        //        //        if (!ans.Equals("y") && !ans.Equals("yes") && !ans.Equals("n") && !ans.Equals("no"))
+        //        //        {
+        //        //            // 入力内容を確認 y/yes or n/no出ない場合は再度確認
+        //        //            while (!ans.Equals("y") && !ans.Equals("yes") && !ans.Equals("n") && !ans.Equals("no"))
+        //        //            {
+        //        //                Console.WriteLine("一部キーが入力されていません。再入力->y 終了->n");
+        //        //                ans = Console.ReadLine();   // 入力待ち
+        //        //                ans = string.IsNullOrWhiteSpace(ans) ? string.Empty : ans.Trim().ToLower(); // nullチェックして小文字に変換
+        //        //            }
+        //        //        }
+
+        //        //        if (ans.Equals("y"))
+        //        //        {
+
+        //        //        }
+        //        //    }
+        //        //}
+        //        //else
+        //        //{
+        //        //    // 情報を更新する
+        //        //    TwapiUpdate();
+        //        //}
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //    }
+        //}
+        //#endregion
         #endregion
 
         #region Public Method
@@ -867,9 +1051,9 @@ namespace Twapi.Twitter
         {
             try
             {
-                XMLUtil.Seialize<TwitterKeys>(ConfigManager.Keys, TwitterAPI.TwitterKeys);
+                XMLUtil.Seialize<TwitterKeys>(ConfigManager.KeysFile, TwitterAPI.TwitterKeys);
                 Console.WriteLine("各種キー(コンシューマーキー・コンシューマーシークレット・アクセストークン・アクセスシークレット)を保存しました");
-                Console.WriteLine("==>" + ConfigManager.Keys);
+                Console.WriteLine("==>" + ConfigManager.KeysFile);
             }
             catch (Exception e)
             {
@@ -992,6 +1176,25 @@ namespace Twapi.Twitter
             }
         }
         #endregion
+
+        //#region 各種キーの初期化処理
+        ///// <summary>
+        ///// 各種キーの初期化処理
+        ///// </summary>
+        ///// <param name="action">アクション名</param>
+        //public static void Init(string action)
+        //{
+        //    try
+        //    {
+        //        // フォロー解除処理の実行
+        //        Init();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //    }
+        //}
+        //#endregion
 
         #endregion
         #endregion

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Twapi.Utilities;
 
 namespace Twapi.Database.SQLite
 {
@@ -17,7 +19,7 @@ namespace Twapi.Database.SQLite
 
 
         // 最初にココを変更する
-        public static string db_file_path { get; set; } = @"twapi.db";
+        public static string db_file_path { get; set; } = Path.Combine(ConfigManager.ConfigDir, "twapi.db");
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

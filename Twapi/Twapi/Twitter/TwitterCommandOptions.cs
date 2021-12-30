@@ -74,5 +74,11 @@ namespace Twapi.Twitter
         [EndpointParam("-as")]
         public string AccessSecret { get; set; }
 
+        /// <summary>
+        /// キーファイルパス
+        /// </summary>
+        [EndpointParam("-keysfile")]
+        public string KeysFile { get; set; }
+
     }
 }

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Twapi.Database.SQLite;
+using System.IO;
 
 namespace Twapi.Twitter
 {
@@ -122,7 +123,28 @@ namespace Twapi.Twitter
             }
             #endregion
 
+            #region キーファイルパス指定
+            // オプションにキーファイルパスが指定されている場合は指定されたファイルを優先する
+            if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.KeysFile))
+            {
+                // キーファイル情報のセット
+                ConfigManager.KeysFile = TwitterArgs.CommandOptions.KeysFile;
+
+            }
+            // キーファイルの存在確認
+            if (File.Exists(ConfigManager.KeysFile))
+            {
+                // キーの読み込み
+                TwitterAPI.TwitterKeys = XMLUtil.Deserialize<TwitterKeys>(ConfigManager.KeysFile);
+            }
+            #endregion
+
             #region 各種キー設定
+            /* デフォルトファイル → キーファイル → キーコマンドの順で上書きする
+             * 何も指定しなければデフォルトのファイルが使用され
+             * -keysfileが指定されていればそのファイルパスのキーが使用される
+             * 更に-ck -cs -at -asオプションが指定されていればオプションを優先する
+             */
             // コンシューマーキーが指定されている場合
             if (!string.IsNullOrEmpty(TwitterArgs.CommandOptions.ConsumerKey))
             {
