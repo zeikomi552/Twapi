@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 namespace Twapi.Database.SQLite.Base
 {
 	/// <summary>
-	/// フォローリスト
-	/// FollowListテーブルをベースに作成しています
-	/// 作成日：2021/12/18 作成者gohya
+	/// フォロバリスト
+	/// FollowBackListテーブルをベースに作成しています
+	/// 作成日：2021/12/31 作成者gohya
 	/// </summary>
-	[Table("FollowList")]
-	public class FollowListBase : INotifyPropertyChanged
+	[Table("FollowBackList")]
+	public class FollowBackListBase : INotifyPropertyChanged
 	{
 		#region パラメータ
 		#region ユーザーID[UserId]プロパティ
@@ -45,53 +45,53 @@ namespace Twapi.Database.SQLite.Base
 		}
 		#endregion
 
-		#region 除外フラグ(フォロー済など)[IsExclude]プロパティ
+		#region データ追加日時[InsertAt]プロパティ
 		/// <summary>
-		/// 除外フラグ(フォロー済など)[IsExclude]プロパティ用変数
+		/// データ追加日時[InsertAt]プロパティ用変数
 		/// </summary>
-		bool _IsExclude = false;
+		DateTime _InsertAt = DateTime.MinValue;
 		/// <summary>
-		/// 除外フラグ(フォロー済など)[IsExclude]プロパティ
+		/// データ追加日時[InsertAt]プロパティ
 		/// </summary>
-		[Column("IsExclude")]
-		public bool IsExclude
+		[Column("InsertAt")]
+		public DateTime InsertAt
 		{
 			get
 			{
-				return _IsExclude;
+				return _InsertAt;
 			}
 			set
 			{
-				if (!_IsExclude.Equals(value))
+				if (!_InsertAt.Equals(value))
 				{
-					_IsExclude = value;
-					NotifyPropertyChanged("IsExclude");
+					_InsertAt = value;
+					NotifyPropertyChanged("InsertAt");
 				}
 			}
 		}
 		#endregion
 
-		#region 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ
+		#region データ更新日時[UpdateAt]プロパティ
 		/// <summary>
-		/// 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ用変数
+		/// データ更新日時[UpdateAt]プロパティ用変数
 		/// </summary>
-		Int32 _Reason = 0;
+		DateTime _UpdateAt = DateTime.MinValue;
 		/// <summary>
-		/// 除外理由(0:- 1:フォロー済み 2:プロテクト 3:ロック)[Reason]プロパティ
+		/// データ更新日時[UpdateAt]プロパティ
 		/// </summary>
-		[Column("Reason")]
-		public Int32 Reason
+		[Column("UpdateAt")]
+		public DateTime UpdateAt
 		{
 			get
 			{
-				return _Reason;
+				return _UpdateAt;
 			}
 			set
 			{
-				if (!_Reason.Equals(value))
+				if (!_UpdateAt.Equals(value))
 				{
-					_Reason = value;
-					NotifyPropertyChanged("Reason");
+					_UpdateAt = value;
+					NotifyPropertyChanged("UpdateAt");
 				}
 			}
 		}
@@ -391,7 +391,7 @@ namespace Twapi.Database.SQLite.Base
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		public FollowListBase()
+		public FollowBackListBase()
 		{
 
 		}
@@ -402,7 +402,7 @@ namespace Twapi.Database.SQLite.Base
 		/// コピーコンストラクタ
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public FollowListBase(FollowListBase item)
+		public FollowBackListBase(FollowBackListBase item)
 		{
 			// 要素のコピー
 			Copy(item);
@@ -414,13 +414,13 @@ namespace Twapi.Database.SQLite.Base
 		/// コピー
 		/// </summary>
 		/// <param name="item">コピー内容</param>
-		public void Copy(FollowListBase item)
+		public void Copy(FollowBackListBase item)
 		{
 			this.UserId = item.UserId;
 
-			this.IsExclude = item.IsExclude;
+			this.InsertAt = item.InsertAt;
 
-			this.Reason = item.Reason;
+			this.UpdateAt = item.UpdateAt;
 
 			this.ScreenName = item.ScreenName;
 
@@ -453,7 +453,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Insert処理
 		/// </summary>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(FollowListBase item)
+		public static void Insert(FollowBackListBase item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -469,10 +469,10 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="item">Insertする要素</param>
-		public static void Insert(SQLiteDataContext db, FollowListBase item)
+		public static void Insert(SQLiteDataContext db, FollowBackListBase item)
 		{
 			// Insert
-			db.Add<FollowListBase>(item);
+			db.Add<FollowBackListBase>(item);
 		}
 		#endregion
 
@@ -482,7 +482,7 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(FollowListBase pk_item, FollowListBase update_item)
+		public static void Update(FollowBackListBase pk_item, FollowBackListBase update_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -499,9 +499,9 @@ namespace Twapi.Database.SQLite.Base
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="pk_item">更新する主キー（主キーの値のみ入っていれば良い）</param>
 		/// <param name="update_item">テーブル更新後の状態</param>
-		public static void Update(SQLiteDataContext db, FollowListBase pk_item, FollowListBase update_item)
+		public static void Update(SQLiteDataContext db, FollowBackListBase pk_item, FollowBackListBase update_item)
 		{
-			var item = db.DbSet_FollowList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
+			var item = db.DbSet_FollowBackList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
 
 			if (item != null)
 			{
@@ -515,7 +515,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Delete処理
 		/// </summary>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(FollowListBase pk_item)
+		public static void Delete(FollowBackListBase pk_item)
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -531,12 +531,12 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <param name="pk_item">削除する主キー（主キーの値のみ入っていれば良い）</param>
-		public static void Delete(SQLiteDataContext db, FollowListBase pk_item)
+		public static void Delete(SQLiteDataContext db, FollowBackListBase pk_item)
 		{
-			var item = db.DbSet_FollowList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
+			var item = db.DbSet_FollowBackList.SingleOrDefault(x => x.UserId.Equals(pk_item.UserId));
 			if (item != null)
 			{
-				db.DbSet_FollowList.Remove(item);
+				db.DbSet_FollowBackList.Remove(item);
 			}
 		}
 		#endregion
@@ -546,7 +546,7 @@ namespace Twapi.Database.SQLite.Base
 		/// Select処理
 		/// </summary>
 		/// <returns>全件取得</returns>
-		public static List<FollowListBase> Select()
+		public static List<FollowBackListBase> Select()
 		{
 			using (var db = new SQLiteDataContext())
 			{
@@ -561,9 +561,9 @@ namespace Twapi.Database.SQLite.Base
 		/// </summary>
 		/// <param name="db">SQLiteDataContext</param>
 		/// <returns>全件取得</returns>
-		public static List<FollowListBase> Select(SQLiteDataContext db)
+		public static List<FollowBackListBase> Select(SQLiteDataContext db)
 		{
-			return db.DbSet_FollowList.ToList<FollowListBase>();
+			return db.DbSet_FollowBackList.ToList<FollowBackListBase>();
 		}
 		#endregion
 		#endregion

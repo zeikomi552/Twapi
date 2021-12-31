@@ -51,6 +51,12 @@ namespace Twapi.Twitter
         public string FollowDays { get; set; }
 
         /// <summary>
+        /// ユーザー数上限
+        /// </summary>
+        [EndpointParam("-limit")]
+        public string Limit { get; set; }
+
+        /// <summary>
         /// コンシューマーキー
         /// </summary>
         [EndpointParam("-ck")]

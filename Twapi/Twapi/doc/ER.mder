@@ -3,7 +3,7 @@
   <TableItems>
     <Items>
       <TableM>
-        <Name>FollowList</Name>
+        <Name>UserList</Name>
         <Description>フォローリスト</Description>
         <CreateDate>2021-12-18T00:00:00+09:00</CreateDate>
         <CreateUser>gohya</CreateUser>
@@ -194,6 +194,131 @@
               <Size xsi:nil="true" />
               <Name>RemoveAt</Name>
               <Description>解除されたことを確認した日</Description>
+            </TableParameterM>
+          </Items>
+        </ParameterItems>
+        <TableRelationList>
+          <Items />
+        </TableRelationList>
+      </TableM>
+      <TableM>
+        <Name>FollowBackList</Name>
+        <Description>フォロバリスト</Description>
+        <CreateDate>2021-12-31T00:00:00+09:00</CreateDate>
+        <CreateUser>gohya</CreateUser>
+        <ParameterItems>
+          <Items>
+            <TableParameterM>
+              <PrimaryKey>true</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>long</Type>
+              <Size xsi:nil="true" />
+              <Name>UserId</Name>
+              <Description>ユーザーID</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>InsertAt</Name>
+              <Description>データ追加日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>UpdateAt</Name>
+              <Description>データ更新日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>ScreenName</Name>
+              <Description>スクリーン名</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>Description</Name>
+              <Description>詳細</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>CreateAt</Name>
+              <Description>作成日時</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FriendsCount</Name>
+              <Description>フォロー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FollowersCount</Name>
+              <Description>フォロワー数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>FavouritesCount</Name>
+              <Description>お気に入り数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>int</Type>
+              <Size xsi:nil="true" />
+              <Name>TweetCount</Name>
+              <Description>ツイート数</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>DateTime</Type>
+              <Size xsi:nil="true" />
+              <Name>LastTweetAt</Name>
+              <Description>最終ツイート日</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>TEXT</Type>
+              <Size xsi:nil="true" />
+              <Name>LastTweet</Name>
+              <Description>最終ツイート内容</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>true</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsProtected</Name>
+              <Description>プライベートアカウントかどうか</Description>
+            </TableParameterM>
+            <TableParameterM>
+              <PrimaryKey>false</PrimaryKey>
+              <NotNull>false</NotNull>
+              <Type>bool</Type>
+              <Size xsi:nil="true" />
+              <Name>IsSuspended</Name>
+              <Description>Twitterからロックされているかどうか</Description>
             </TableParameterM>
           </Items>
         </ParameterItems>
