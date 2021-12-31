@@ -37,10 +37,10 @@ namespace Twapi
                 StringBuilder msg = new StringBuilder();
                 foreach (var arg in args) msg.Append(arg + " ");
 
-                Logger.Error("twapi " + e.Message);
+                Logger.Error("twapi " + msg.ToString());
                 Logger.Error(e.Message);
 
-                Console.WriteLine("twapi " + e.Message);
+                Console.WriteLine("twapi " + msg.ToString());
                 Console.WriteLine(e.Message);
                 return -1;
             }
