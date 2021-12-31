@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twapi.Utilities;
 
 namespace Twapi.Twitter
 {
-    public class TwitterCommandOptions
+    public class TwitterCommandOptions : TwapiBase
     {
         /// <summary>
         /// 検索のためのキーワードを指定します

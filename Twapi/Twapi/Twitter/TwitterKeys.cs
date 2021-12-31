@@ -5,10 +5,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twapi.Utilities;
 
 namespace Twapi.Twitter
 {
-    public class TwitterKeys : INotifyPropertyChanged
+    public class TwitterKeys : TwapiBase, INotifyPropertyChanged
 	{
 		#region コンストラクタ
 		/// <summary>

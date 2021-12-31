@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using log4net.Config;
 
 namespace Twapi
 {
-    class Program
+    class Program : TwapiBase
     {
         #region TwitterAPI メイン関数
         /// <summary>
@@ -21,15 +22,21 @@ namespace Twapi
         /// http://westplain.sakuraweb.com/translate/twitter/Documentation/REST-APIs/Public-API/REST-APIs.cgi
         /// </summary>
         /// <param name="args"></param>
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
+            // log4netの設定ファイル読み込み処理
+            XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
+
             try
             {
                 TwCommand.ExecuteCommand(args);
+                return 0;
             }
             catch (Exception e)
             {
+                Logger.Error(e.Message);
                 Console.WriteLine(e.Message);
+                return -1;
             }
 
         }

@@ -20,7 +20,7 @@ namespace Twapi.Twitter
         }
         public string Key { get; set; }
     }
-    public class TwitterArgs
+    public class TwitterArgs : TwapiBase
     {
         #region 引数リスト
         /// <summary>

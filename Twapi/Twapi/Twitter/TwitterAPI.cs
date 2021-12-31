@@ -15,7 +15,7 @@ namespace Twapi.Twitter
     /// 参考：
     /// http://westplain.sakuraweb.com/translate/twitter/Documentation/REST-APIs/Public-API/REST-APIs.cgi
     /// </summary>
-    public class TwitterAPI : INotifyPropertyChanged
+    public class TwitterAPI : TwapiBase, INotifyPropertyChanged
     {
         public static TwitterKeys TwitterKeys { get; set; } = new TwitterKeys();
 
@@ -50,7 +50,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return null;
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -74,7 +75,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return null;
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion

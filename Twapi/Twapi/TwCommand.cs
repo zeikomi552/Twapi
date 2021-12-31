@@ -10,7 +10,7 @@ using Twapi.Database.SQLite;
 
 namespace Twapi
 {
-    public class TwCommand
+    public class TwCommand : TwapiBase
     {
         #region Action
         /// <summary>
@@ -40,29 +40,38 @@ namespace Twapi
         /// <param name="args">パラメータ</param>
         public static void ExecuteCommand(string[] args)
         {
-            // 引数のセット
-            TwitterArgs.SetCommand(args);
-
-            string action = string.Empty;
-
-            if (TwitterArgs.Args.ContainsKey("action"))
+            try
             {
-                action = TwitterArgs.Args["action"];
-            }
-            else
-            {
-                Console.WriteLine("不正なコマンドです。\r\n");
-                action = "/?";
-            }
+                // 引数のセット
+                TwitterArgs.SetCommand(args);
 
-            // アクションの実行
-            foreach (var tmp in TwitterActions.Actions)
-            {
-                if (action.Equals(tmp.ActionName))
+                string action = string.Empty;
+
+                if (TwitterArgs.Args.ContainsKey("action"))
                 {
-                    tmp.Action(tmp.ActionName);
-                    break;
+                    action = TwitterArgs.Args["action"];
                 }
+                else
+                {
+                    Console.WriteLine("不正なコマンドです。\r\n");
+                    action = "/?";
+                }
+
+                // アクションの実行
+                foreach (var tmp in TwitterActions.Actions)
+                {
+                    if (action.Equals(tmp.ActionName))
+                    {
+                        tmp.Action(tmp.ActionName);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+                Console.WriteLine(e.Message);
+                throw;
             }
         }
         #endregion

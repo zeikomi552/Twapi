@@ -11,7 +11,7 @@ using ClosedXML.Excel;
 
 namespace Twapi.Twitter
 {
-    public class TwitterActions
+    public class TwitterActions : TwapiBase
     {
         #region 乱数発生用
         /// <summary>
@@ -174,14 +174,17 @@ namespace Twapi.Twitter
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
                         db.Database.RollbackTransaction();
+                        Console.WriteLine(e.Message);
+                        Logger.Error(e.Message);
+                        throw;
                     }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw;
             }
         }
         #endregion
@@ -288,14 +291,18 @@ namespace Twapi.Twitter
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
                         db.Database.RollbackTransaction();
+                        Console.WriteLine(e.Message);
+                        Logger.Error(e.Message);
+                        throw;
                     }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -395,8 +402,10 @@ namespace Twapi.Twitter
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
                             db.Database.RollbackTransaction();
+                            Console.WriteLine(e.Message);
+                            Logger.Error(e.Message);
+                            throw;
                         }
                     }
 
@@ -413,6 +422,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -507,8 +518,10 @@ namespace Twapi.Twitter
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
                             db.Database.RollbackTransaction();
+                            Console.WriteLine(e.Message);
+                            Logger.Error(e.Message);
+                            throw;
                         }
                     }
 
@@ -525,6 +538,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -552,6 +567,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -610,8 +627,10 @@ namespace Twapi.Twitter
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
                             db.Database.RollbackTransaction();
+                            Console.WriteLine(e.Message);
+                            Logger.Error(e.Message);
+                            throw;
                         }
                     }
                 }
@@ -619,6 +638,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -737,14 +758,18 @@ namespace Twapi.Twitter
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
                         db.Database.RollbackTransaction();
+                        Console.WriteLine(e.Message);
+                        Logger.Error(e.Message);
+                        throw;
                     }
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -831,6 +856,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -915,6 +942,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1005,6 +1034,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1037,7 +1068,7 @@ namespace Twapi.Twitter
             try
             {
                 Console.WriteLine("使用方法：");
-                Console.WriteLine("\ttwapi [actioncommand] [-options]");
+                Console.WriteLine("\ttwapi /actioncommand [-options]");
 
                 Console.WriteLine("");
                 Console.WriteLine("actioncommand :");
@@ -1050,6 +1081,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1094,6 +1127,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1121,6 +1156,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1145,6 +1182,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1169,6 +1208,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
@@ -1188,6 +1229,8 @@ namespace Twapi.Twitter
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Logger.Error(e.Message);
+                throw;
             }
         }
         #endregion
