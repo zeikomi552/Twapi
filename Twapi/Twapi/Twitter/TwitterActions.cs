@@ -28,7 +28,7 @@ namespace Twapi.Twitter
         {
             new TwitterAction("/?", "ヘルプを表示します",
                 Help),
-            new TwitterAction("/h", "ヘルプを表示します",
+            new TwitterAction("/h", "ヘルプを表示します\r\n",
                 Help),
             new TwitterAction("/regist", "各種キーの保存処理" + "\r\n"
                 + "\t\t-ck コンシューマーキー(必須)" + "\r\n"
