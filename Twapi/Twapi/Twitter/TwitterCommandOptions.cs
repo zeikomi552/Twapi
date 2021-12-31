@@ -34,7 +34,7 @@ namespace Twapi.Twitter
         public string FFmax { get; set; }
 
         /// <summary>
-        /// 最終ツイート日の指定
+        /// 最終ツイート日からの経過日数を正の整数値で指定する
         /// </summary>
         [EndpointParam("-lastday")]
         public string LastDay { get; set; }
@@ -46,7 +46,7 @@ namespace Twapi.Twitter
         public string ExcelPath { get; set; }
 
         /// <summary>
-        /// フォローしてからの期間
+        /// フォローしてからの期間を正の整数値で指定する
         /// </summary>
         [EndpointParam("-followdays")]
         public string FollowDays { get; set; }

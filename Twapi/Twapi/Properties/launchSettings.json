@@ -1,7 +1,8 @@
 {
   "profiles": {
     "Twapi": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "/?"
     }
   }
 }
