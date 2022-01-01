@@ -1,5 +1,9 @@
 # Twapi
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/zeikomi552/twapi)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/zeikomi552/twapi)
+![GitHub](https://img.shields.io/github/license/zeikomi552/twapi)
 
+[![Twapi](https://github-readme-stats.vercel.app/api?username=zeikomi552)](https://github.com/zeikomi552/twapi)
 フォロバさんを探せで作ってきたソフトがそれなりに形になってきたので公開します。
 できることは以下の通りです。
 
