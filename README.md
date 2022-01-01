@@ -22,9 +22,10 @@
 
 |内容|詳細|
 |----|----|
-|OS|Windows 10, 11|
-|FrameWork|.NET 5.0|
-|出力の種類|コンソールアプリケーション|
-|GitHub|https://github.com/zeikomi552/Twapi|
 |ライセンス|MIT|
-
+|OS|Windows 10, 11|
+|フレームワーク|.NET 5.0|
+|出力の種類|コンソールアプリケーション|
+|リポジトリ|https://github.com/zeikomi552/Twapi|
+|不具合連絡|https://github.com/zeikomi552/Twapi/issues|
+|進捗|https://github.com/zeikomi552/Twapi/projects/1|
