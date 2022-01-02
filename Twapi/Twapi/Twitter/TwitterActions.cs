@@ -678,40 +678,40 @@ namespace Twapi.Twitter
                     return;
                 }
 
+                /* データベース上のフォロバリストとフレンドリストの
+                 * フレンドを探してフォロバリストに登録する */
 
                 List<long> userid_list = new List<long>();
 
-                // フォロー対象リストの取得
-                var db_follow_list = (from x in FollowBackListBase.Select()
+                // フォロバリストの取得
+                var db_folloba_list = (from x in FollowBackListBase.Select()
                                       select x.UserId).ToList<long>();
 
-                // フォロバリストからuser_idのリスト作成
-                userid_list.AddRange(db_follow_list);
+                // 検索対象のユーザーリストに詰め込み
+                userid_list.AddRange(db_folloba_list);
 
-                // フォロー対象リストの取得
-                var friends_list = (from x in FrinedsLogBase.Select()
+                // フレンド（フォローしている人）リストの取得
+                var db_friends_list = (from x in FrinedsLogBase.Select()
                                       select x.UserId).ToList<long>();
 
-                // 現在フォローしているユーザーからuser_idのリストを作成
-                userid_list.AddRange(friends_list);
+                // 検索対象のユーザーリストに詰め込み
+                userid_list.AddRange(db_friends_list);
 
-                // 冗長を削除
-                friends_list = friends_list.Distinct().ToList<long>();
+                // 冗長を削除（ランダムを平等にするため）
+                userid_list = userid_list.Distinct().ToList<long>();
 
-                // フォローリストにもフォロバリストにもユーザーが登録されていない
+                // フレンドリストにもフォロバリストにもユーザーが登録されていない
                 if (userid_list.Count <= 0)
                 {
                     Console.Write("数名ツイッターでフォローしてから実行してください");
                     return;
                 }
 
-                // インデックスの取得
-                var index = _Rand.Next(0, friends_list.Count);
+                // ユーザーをランダムで抽出
+                var index = _Rand.Next(0, userid_list.Count);
+                var target_id = userid_list.ElementAt(index);   // User.Idの取得
 
-                // ユーザーの取得
-                var target_id = friends_list.ElementAt(index);
-
-                // 対象ユーザーのフレンド（フォローしている人）を取得する
+                // 抽出したユーザーのフレンド（フォローしている人）を取得する
                 var api_user_list = TwitterAPI.Token.Friends.List(
                     user_id => target_id, count => 100);
 
@@ -733,7 +733,7 @@ namespace Twapi.Twitter
                                 if (api_user.Description.Contains(key))
                                 {
                                     // データベース上に登録されているかを確認
-                                    var db_friend = friends_list.Where(x => x.Equals(api_user.Id));
+                                    var db_friend = db_folloba_list.Where(x => x.Equals(api_user.Id));
 
                                     // 存在しないならデータの作成
                                     if (!db_friend.Any())

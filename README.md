@@ -125,7 +125,7 @@ twapi /remove -lastday 32 -followdays 10 -sql "C:\xxxxx\xxxxx.db" -keysfile "C:\
 - -sql : 省略可、使用するデータの保存先を指定します。指定なしの場合はAppData\Roaming\Zeikomi\twapi\Config\twapi.dbを使用します。
 - -keysfile : 省略可、キーが保存されているファイルパスを指定します。指定無しの場合はAppData\Roaming\Zeikomi\twapi\Config\twapi.keysを使用します。
 
-## 自動ツイート
+### 自動ツイート
 
 本コマンドを使用することで、エクセルに記載された内容をランダムでツイートします。
 エクセルファイルのA列にはツイートするテキストを、B列にはリンク先を指定したい場合URLを指定します。

@@ -37,6 +37,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -53,6 +61,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -140,15 +156,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Twapi"
-        "ProductCode" = "8:{CDE23EAD-DEB0-4E1B-A758-33C8CBA543B9}"
-        "PackageCode" = "8:{C64426FA-361C-4564-8249-E1C557114F9A}"
+        "ProductCode" = "8:{0C6D4B3B-7B1D-4FC3-9CA5-764F3113CCF3}"
+        "PackageCode" = "8:{D307C31E-80A8-4081-9465-CF06C76B4A45}"
         "UpgradeCode" = "8:{B8553658-73A0-4DD5-BB45-03312D051CC4}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.9.0"
+        "ProductVersion" = "8:0.9.1"
         "Manufacturer" = "8:Zeikomi"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -662,7 +678,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DD840426F32B47D7A49141F3F67EA818"
             {
-            "SourcePath" = "8:..\\Twapi\\obj\\Release\\net5.0\\apphost.exe"
+            "SourcePath" = "8:..\\Twapi\\obj\\Debug\\net5.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5810D25348474AB4B7A2CC3C93B5F724"
