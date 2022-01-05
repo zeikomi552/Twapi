@@ -178,6 +178,7 @@ Twitter APIの使用制限は厳しめです。
 |/search|10分/回|
 |/follow|15分/回|
 |/remove|15分/回|
+|/autotweet|1日/回|
 
 タスクスケジューラで動作させています。
 
