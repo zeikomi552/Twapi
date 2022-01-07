@@ -44,6 +44,11 @@ namespace Twapi.Twitter
         /// </summary>
         [EndpointParam("-xlsx")]
         public string ExcelPath { get; set; }
+        /// <summary>
+        /// エクセルファイルパス
+        /// </summary>
+        [EndpointParam("-tweet")]
+        public string Tweet { get; set; }
 
         /// <summary>
         /// フォローしてからの期間を正の整数値で指定する

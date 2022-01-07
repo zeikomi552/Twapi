@@ -61,7 +61,8 @@ namespace Twapi.Twitter
                 + "\t\t-keysfile キーファイルの保存先(省略時はデフォルトのパス)" + "\r\n"
                 , TwapiRemove),
             new TwitterAction("/autotweet", "Excelの内容をランダムでツイートします" + "\r\n"
-                + "\t\t-xlsx エクセルファイルパスを指定(必須)"
+                + "\t\t-xlsx エクセルファイルパスを指定(-tweetとどちらか必須)"
+                + "\t\t-tweet ツイート内容(-xlsxとどちらか必須)"
                 + "\t\t-keysfile キーファイルの保存先(省略可)" + "\r\n"
                 , AutoTweet),
             //new TwitterAction("/init", "各種キーの初期化設定を行います"
@@ -955,8 +956,84 @@ namespace Twapi.Twitter
             }
         }
         #endregion
-        
+
         #region 自動ツイート
+
+        private static void AutoTweetExcel(string path)
+        {
+
+            // 読み取り専用で開く
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                // Bookの操作
+                using (XLWorkbook book = new XLWorkbook(fs, XLEventTracking.Disabled))
+                {
+                    // シートの一番目を取得
+                    var sheet = book.Worksheets.ElementAt(0);
+                    List<KeyValuePair<string, string>> msg_list = new List<KeyValuePair<string, string>>();
+                    int row = 2;    // 先頭行はヘッダとして扱う
+
+                    // ループ
+                    while (true)
+                    {
+
+                        string msg = sheet.Cell(row, 1).Value != null ? sheet.Cell(row, 1).Value.ToString() : string.Empty; // メッセージの取得
+                        string url = sheet.Cell(row, 2).Value != null ? sheet.Cell(row, 2).Value.ToString() : string.Empty; // URLの取得
+
+                        // メッセージ部が空ならば抜ける
+                        if (string.IsNullOrEmpty(msg))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            // リストに追加（メッセージとURLをセットで保持）
+                            msg_list.Add(new KeyValuePair<string, string>(msg, url));
+                        }
+                        row++;  // 行をインクリメント
+                    }
+
+                    int max = 280;  // ツイート数最大値
+                    if (msg_list.Count > 0)
+                    {
+                        // ツイート内容の取得（ランダム）
+                        int index = _Rand.Next(0, msg_list.Count);
+                        var lst = msg_list.ElementAt(index);
+                        var msg = lst.Key;      // メッセージの取り出し
+                        var url = lst.Value;    // URLの取り出し
+
+                        if (string.IsNullOrEmpty(url))
+                        {
+                            // バイト数で切り取る
+                            msg = StrUtil.SubstringByte(lst.Key, max);
+                        }
+                        else
+                        {
+                            // URLは23文字扱いのため-23 改行を含むので24文字
+                            msg = StrUtil.SubstringByte(lst.Key, max - 24);
+                            msg = msg + "\r\n" + url;
+                        }
+
+                        // ツイート
+                        TwitterAPI.Token.Statuses.Update(msg);
+                        Console.WriteLine(msg);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// ツイート処理
+        /// </summary>
+        /// <param name="tweet">ツイート内容</param>
+        private static void AutoTweetMessage(string tweet)
+        {
+            var msg = tweet;      // メッセージの取り出し
+                                  // ツイート
+
+            TwitterAPI.Token.Statuses.Update(msg);
+            Console.WriteLine(msg);
+        }
         /// <summary>
         /// 自動ツイート
         /// </summary>
@@ -964,79 +1041,30 @@ namespace Twapi.Twitter
         {
             try
             {
-                string path = TwitterArgs.CommandOptions.ExcelPath;
+                string path = TwitterArgs.CommandOptions.ExcelPath; // Excelパス
+                string tweet = TwitterArgs.CommandOptions.Tweet;    // ツイート内容
 
-                // ファイルパスが指定されていない場合
-                if (string.IsNullOrEmpty(path))
+                // ファイルパスが指定されている場合
+                if (!string.IsNullOrEmpty(path))
                 {
-                    Console.WriteLine("ファイルパスが指定されていません。");
-                    return;
-                }
-
-                // 指定されたファイルパスが存在しない場合
-                if (!File.Exists(path))
-                {
-                    Console.WriteLine("ファイルが存在しません。");
-                    return;
-                }
-
-                // 読み取り専用で開く
-                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    // Bookの操作
-                    using (XLWorkbook book = new XLWorkbook(fs, XLEventTracking.Disabled))
+                    // 指定されたファイルパスが存在しない場合
+                    if (!File.Exists(path))
                     {
-                        // シートの一番目を取得
-                        var sheet = book.Worksheets.ElementAt(0);
-                        List<KeyValuePair<string, string>> msg_list = new List<KeyValuePair<string, string>>();
-                        int row = 2;    // 先頭行はヘッダとして扱う
-
-                        // ループ
-                        while (true)
-                        {
-                            
-                            string msg = sheet.Cell(row, 1).Value != null ? sheet.Cell(row, 1).Value.ToString() : string.Empty; // メッセージの取得
-                            string url = sheet.Cell(row, 2).Value != null ? sheet.Cell(row, 2).Value.ToString() : string.Empty; // URLの取得
-
-                            // メッセージ部が空ならば抜ける
-                            if (string.IsNullOrEmpty(msg))
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                // リストに追加（メッセージとURLをセットで保持）
-                                msg_list.Add(new KeyValuePair<string, string>(msg, url));
-                            }
-                            row++;  // 行をインクリメント
-                        }
-
-                        int max = 280;  // ツイート数最大値
-                        if (msg_list.Count > 0)
-                        {
-                            // ツイート内容の取得（ランダム）
-                            int index = _Rand.Next(0, msg_list.Count);
-                            var lst = msg_list.ElementAt(index);
-                            var msg = lst.Key;      // メッセージの取り出し
-                            var url = lst.Value;    // URLの取り出し
-
-                            if (string.IsNullOrEmpty(url))
-                            {
-                                // バイト数で切り取る
-                                msg = StrUtil.SubstringByte(lst.Key, max);
-                            }
-                            else
-                            {
-                                // URLは23文字扱いのため-23 改行を含むので24文字
-                                msg = StrUtil.SubstringByte(lst.Key, max - 24);
-                                msg = msg + "\r\n" + url;
-                            }
-
-                            // ツイート
-                            TwitterAPI.Token.Statuses.Update(msg);
-                            Console.WriteLine(msg);
-                        }
+                        Console.WriteLine("ファイルが存在しません。");
+                        return;
                     }
+
+                    // Excelを使用した自動ツイート
+                    AutoTweetExcel(path);
+                }
+                else if (!string.IsNullOrEmpty(tweet))
+                {
+                    // 指定したメッセージでツイートする
+                    AutoTweetMessage(tweet);
+                }
+                else
+                {
+                    Console.WriteLine("-xlsxまたは-tweetオプションが必要です。");
                 }
             }
             catch (Exception e)
